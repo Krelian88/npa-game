@@ -56,12 +56,19 @@ func _ready() -> void:
 	
 func take_damage() -> void:
 	health -= 1
+	_flash_damage()
 	print("[Boss] Health: %d" % health)
 	if health <= MAX_HEALTH / 2 and phase == 1:
 		_enter_phase_2()
 	if health <= 0:
 		died.emit()
 		queue_free()
+	
+func _flash_damage() -> void:
+	var tween := create_tween()
+	tween.set_loops(3)
+	tween.tween_property(self, "modulate", Color.RED, 0.05)
+	tween.tween_property(self, "modulate", Color.WHITE, 0.05)
 	
 func _enter_phase_2() -> void:
 	phase = 2

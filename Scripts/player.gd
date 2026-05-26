@@ -67,13 +67,25 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 		player_health -= 10
 		print("Player Health: ", player_health) #Prints to the bottom of the screen
 	#Turn on invincibility and starts the flash!
-	is_invincible = true
-	modulate = Color.RED #Changes the colour of the player
-	$InvincibilityTimer.start()
+		is_invincible = true
+		_start_blink()
+		$InvincibilityTimer.start()
 	
 func _on_invincibility_timer_timeout() -> void:
+	pass
 	is_invincible	= false
 	modulate = Color.WHITE #Changes colour back to normal!
+	
+func _start_blink() -> void:
+	var tween := create_tween()
+	tween.set_loops(12)
+	tween.tween_callback(func(): visible = false)
+	tween.tween_interval(0.1)
+	tween.tween_callback(func(): visible = true)
+	tween.tween_interval(0.1)
+	await tween.finished
+	is_invincible = false
+	visible = true
 	
 func shoot() -> void:
 	var new_bullet = bullet.instantiate()

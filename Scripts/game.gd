@@ -1,21 +1,21 @@
 extends Node2D
-
+	
 # ONREADY VAR START HERE: ******************************************
 @onready var bgm = $bgm
 @onready var boss_bgm = $boss_bgm
 @onready var segment_manager = $segment_manager
 # ONREADY VAR ENDS *********************************************
-
+	
 # VARIABLES START HERE: *************************************************
 var coin = preload("res://Scene/coin.tscn")
 var target = preload("res://Scene/target.tscn")
 var pause_menu = preload("res://Scene/pause_menu.tscn")
 # VARIABLES ENDS *******************************************************
-
+	
 # CONSTANTS START HERE: ********************************************
 const SPAWN_MARGIN:= 60    #keep enemies away from the very edge
 # CONSTANTS END ***********************************************
-
+	
 # FUNCTIONS START HERE: *********************************************
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -36,6 +36,17 @@ func _ready() -> void:
 	
 	bgm.play()
 	bgm.finished.connect(bgm.play)
+	
+	var player = get_node("Player")
+	player.input_enabled = false
+	player.global_position = Vector2(540, 3200)
+	var entrance := create_tween()
+	entrance.set_ease(Tween.EASE_OUT)
+	entrance.set_trans(Tween.TRANS_QUAD)
+	entrance.tween_property(player, "global_position", Vector2(540, 2850), 3.0)
+	entrance.tween_callback(func(): player.input_enabled = true)
+	entrance.tween_interval(0.5)
+	entrance.tween_callback(func(): segment_manager.start_segment())
 	
 func _on_game_won() -> void:
 	print("YOU WIN!")

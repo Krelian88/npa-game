@@ -1,12 +1,12 @@
 class_name SegmentManager
-
+	
 extends Node
-
+	
 # SIGNALS START HERE: **********************************************
 signal segment_cleared(segment_index)
 signal all_segments_cleared
 #SIGNALS END ******************************************
-
+	
 #CONSTANTS START HERE: ***************************************************
 const SEGMENT_COUNT := 4
 const LEVEL_HEIGHT := 3000
@@ -19,7 +19,7 @@ const SEGMENTS := [
 ]
 const SPAWN_MARGIN := 60
 #CONSTANTS END **************************************************
-
+	
 #VARIABLES START HERE: ****************************************************
 var current_segment := 0
 var enemies_to_spawn := 0
@@ -38,13 +38,12 @@ var enemy_scenes := [
 var boss_scene = preload("res://Scene/boss.tscn")
 var boss_alive := false
 #VARIABLES END ****************************************************
-
+	
 #FUNCTIONS START HERE: ****************************************************
 func _ready() -> void:
 	player = get_parent().get_node("Player")
 	draw_debug_boundaries.call_deferred()
-	start_segment.call_deferred()
-
+	
 func start_segment() -> void:
 	enemies_alive = SEGMENTS[current_segment]["enemies"]
 	print("[SegmentManager] Starting segment %d with %d enemies" % [current_segment+ 1, enemies_alive])
@@ -173,7 +172,7 @@ func create_wall(y_pos: float, one_way: bool = false) -> StaticBody2D:
 	wall.position = Vector2(0, y_pos)
 	get_parent().add_child(wall)
 	return wall
-
+	
 func place_top_wall() -> void:
 	if wall_top:
 		wall_top.queue_free()

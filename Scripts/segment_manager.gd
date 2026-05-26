@@ -103,7 +103,6 @@ func spawn_enemies() -> void:
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	add_child(spawn_timer)
 	spawn_timer.start()
-	_on_spawn_timer_timeout()
 	
 func _on_spawn_timer_timeout() -> void:
 	if enemies_to_spawn <= 0:

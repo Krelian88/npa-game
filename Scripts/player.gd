@@ -64,12 +64,16 @@ func _physics_process(_delta: float) -> void:
 	
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Enemies") and is_invincible == false:
-		player_health -= 10
-		print("Player Health: ", player_health) #Prints to the bottom of the screen
-	#Turn on invincibility and starts the flash!
-		is_invincible = true
-		_start_blink()
-		$InvincibilityTimer.start()
+		take_damage(10)
+	
+func take_damage(amount: int) -> void:
+	if is_invincible:
+		return
+	player_health -= amount
+	print("Player Health: ", player_health)
+	is_invincible = true
+	_start_blink()
+	$InvincibilityTimer.start()
 	
 func _on_invincibility_timer_timeout() -> void:
 	pass

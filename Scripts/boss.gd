@@ -166,8 +166,18 @@ func _spawn_minion() -> void:
 	for i in range(count):
 		var scene = enemy_scenes[randi() % enemy_scenes.size()]
 		var minion : EnemyBase = scene.instantiate()
-		minion.position.x = randf_range(100, 980)
-		minion.position.y = randf_range(0, 750)
+		var entries : Array = segment_manager.SPAWN_ENTRIES[3]
+		var entry : Dictionary = entries[randi() % entries.size()]
+		minion.position = entry["from"]
+		minion.is_entering = true
+		var tween := create_tween()
+		tween.set_ease(Tween.EASE_OUT)
+		tween.set_trans(Tween.TRANS_QUAD)
+		tween.tween_property(minion, "position", entry["to"], 0.8)
+		tween.tween_callback(func():
+			if is_instance_valid(minion):
+				minion.is_entering = false
+		)
 		minion.died.connect(segment_manager.on_enemy_died)
 		get_parent().add_child(minion)
 		segment_manager.enemies_alive += 1

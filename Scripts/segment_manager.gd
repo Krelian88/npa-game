@@ -11,6 +11,8 @@ signal all_segments_cleared
 const SEGMENT_COUNT := 4
 const LEVEL_HEIGHT := 3000
 const SEGMENT_HEIGHT := 750 # LEVEL_HEIGHT PER SEGMENT_COUNT
+
+# SEGMENTS SIZE AND DIVISION:
 const SEGMENTS := [
 	{"y_min": 2250, "y_max": 3000, "start_x": 540, "start_y": 2850, "enemies": 3},
 	{"y_min": 1500, "y_max": 2250, "start_x": 540, "start_y": 2100, "enemies": 6},
@@ -18,6 +20,46 @@ const SEGMENTS := [
 	{"y_min": 0,    "y_max": 750,  "start_x": 540, "start_y": 600, "enemies": 0}
 ]
 const SPAWN_MARGIN := 60
+
+# SEGMENTS POINT OF ENTRY FOR ENEMIES:
+const SPAWN_ENTRIES := [
+	# Segment 0 (y: 2250-3000) — top, left, right
+	[
+		{"from": Vector2(540, 2220),  "to": Vector2(540, 2420)},
+		{"from": Vector2(-40, 2625),  "to": Vector2(150, 2625)},
+		{"from": Vector2(1120, 2625), "to": Vector2(930, 2625)},
+	],
+	# Segment 1 (y: 1500-2250) — adds top-left and top-right corners
+	[
+		{"from": Vector2(540, 1470),  "to": Vector2(540, 1670)},
+		{"from": Vector2(-40, 1875),  "to": Vector2(150, 1875)},
+		{"from": Vector2(1120, 1875), "to": Vector2(930, 1875)},
+		{"from": Vector2(-40, 1470),  "to": Vector2(150, 1670)},
+		{"from": Vector2(1120, 1470), "to": Vector2(930, 1670)},
+	],
+	# Segment 2 (y: 750-1500) — adds upper-left, upper-right, and bottom middle
+	[
+		{"from": Vector2(540, 720),   "to": Vector2(540, 920)},
+		{"from": Vector2(-40, 1125),  "to": Vector2(150, 1125)},
+		{"from": Vector2(1120, 1125), "to": Vector2(930, 1125)},
+		{"from": Vector2(-40, 720),   "to": Vector2(150, 920)},
+		{"from": Vector2(1120, 720),  "to": Vector2(930, 920)},
+		{"from": Vector2(-40, 937),   "to": Vector2(150, 937)},
+		{"from": Vector2(1120, 937),  "to": Vector2(930, 937)},
+		{"from": Vector2(540, 1520),  "to": Vector2(540, 1330)},
+	],
+	# Segment 3 (y: 0-750) — boss minions, same layout as segment 2
+	[
+		{"from": Vector2(540, -30),   "to": Vector2(540, 170)},
+		{"from": Vector2(-40, 375),   "to": Vector2(150, 375)},
+		{"from": Vector2(1120, 375),  "to": Vector2(930, 375)},
+		{"from": Vector2(-40, -30),   "to": Vector2(150, 170)},
+		{"from": Vector2(1120, -30),  "to": Vector2(930, 170)},
+		{"from": Vector2(-40, 187),   "to": Vector2(150, 187)},
+		{"from": Vector2(1120, 187),  "to": Vector2(930, 187)},
+		{"from": Vector2(540, 770),   "to": Vector2(540, 580)},
+	],
+]
 #CONSTANTS END **************************************************
 	
 #VARIABLES START HERE: ****************************************************
@@ -113,8 +155,18 @@ func _on_spawn_timer_timeout() -> void:
 	for i in range(batch):
 		var scene = enemy_scenes[randi() % enemy_scenes.size()]
 		var new_enemy : EnemyBase = scene.instantiate()
-		new_enemy.position.x = randi_range(SPAWN_MARGIN, 1080 - SPAWN_MARGIN)
-		new_enemy.position.y = randi_range(int(seg["y_min"]) + SPAWN_MARGIN, int(seg["y_max"]) - SPAWN_MARGIN)
+		var entries : Array = SPAWN_ENTRIES[current_segment]
+		var entry : Dictionary = entries[randi() % entries.size()]
+		new_enemy.position = entry["from"]
+		new_enemy.is_entering = true
+		var tween := create_tween()
+		tween.set_ease(Tween.EASE_OUT)
+		tween.set_trans(Tween.TRANS_QUAD)
+		tween.tween_property(new_enemy, "position", entry["to"], 0.8)
+		tween.tween_callback(func():
+			if is_instance_valid(new_enemy):
+				new_enemy.is_entering = false
+		)
 		new_enemy.died.connect(on_enemy_died)
 		get_parent().add_child(new_enemy)
 		enemies_to_spawn -= 1

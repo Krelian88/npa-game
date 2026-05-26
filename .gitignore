@@ -1,0 +1,15 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Export configs (may contain sensitive data)
+export_presets.cfg
+
+# Mono/C# (not used but just in case)
+.mono/
+data_*/
+mono_crash.*.json
+
+# OS files
+.DS_Store
+Thumbs.db

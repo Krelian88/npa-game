@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://dgnl6nlbvdk8f"]
+
+[ext_resource type="Script" uid="uid://dd5c2t6wneqoy" path="res://Scripts/bullet.gd" id="1_k7h5k"]
+[ext_resource type="AudioStream" uid="uid://vc3lhs6p527l" path="res://Assets/SoundFX/target_hit.mp3" id="3_jm66p"]
+[ext_resource type="Texture2D" uid="uid://b3ejde18kavai" path="res://Assets/Art/Bullet_02_spritesheet.png" id="3_sj187"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kt36j"]
+atlas = ExtResource("3_sj187")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1p02l"]
+atlas = ExtResource("3_sj187")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_145i1"]
+atlas = ExtResource("3_sj187")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pf58l"]
+atlas = ExtResource("3_sj187")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4smue"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kt36j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1p02l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_145i1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pf58l")
+}],
+"loop": true,
+"name": &"default",
+"speed": 16.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jm66p"]
+
+[node name="Bullet" type="Area2D" unique_id=1154833884 groups=["Bullet"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_k7h5k")
+
+[node name="hit_targetfx" type="AudioStreamPlayer" parent="." unique_id=806102998]
+stream = ExtResource("3_jm66p")
+bus = &"SFX"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1963637128]
+texture_filter = 1
+position = Vector2(2.3841858e-07, 4.7683716e-07)
+scale = Vector2(0.29687497, 0.29687497)
+sprite_frames = SubResource("SpriteFrames_4smue")
+autoplay = "default"
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=122838288]
+position = Vector2(0, 4.7683716e-07)
+scale = Vector2(0.053146258, 13.605442)
+color = Color(1, 0.68, 0.68, 1)
+texture_scale = 1.47
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1514396119]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=690636015]
+amount = 5
+lifetime = 0.32
+fixed_fps = 26
+emission_shape = 1
+emission_sphere_radius = 7.34
+scale_amount_min = 0.0
+scale_amount_max = 2.0
+color = Color(1, 0.61, 0.61, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1799133397]
+shape = SubResource("CircleShape2D_jm66p")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

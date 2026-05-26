@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://c5qwpkxg1sflc"]
+
+[ext_resource type="Shader" uid="uid://l5113emk52a6" path="res://Shaders/crt_shader.gdshader" id="1_7k14i"]
+[ext_resource type="Script" uid="uid://cchy5d6vvu2yx" path="res://Scripts/crt_overlay.gd" id="1_maumm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iws6x"]
+shader = ExtResource("1_7k14i")
+shader_parameter/scanline_intensity = 0.15
+shader_parameter/scanline_count = 200.0
+shader_parameter/scanline_thickness = 0.4
+shader_parameter/curvature = 0.15
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/aberration = 0.002
+shader_parameter/brightness = 1.1
+
+[node name="crt_overlay" type="CanvasLayer" unique_id=97978722]
+layer = 100
+
+[node name="screen" type="ColorRect" parent="." unique_id=1808775488]
+material = SubResource("ShaderMaterial_iws6x")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+script = ExtResource("1_maumm")

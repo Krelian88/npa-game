@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://ocrkjlgey0i7"]
+
+[ext_resource type="Script" uid="uid://x7maykly67t" path="res://Scripts/enemy2.gd" id="1_4w621"]
+[ext_resource type="Texture2D" uid="uid://dafjtmem3htxn" path="res://Assets/Art/Purple can.png" id="2_4w621"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4jekx"]
+size = Vector2(22, 49)
+
+[node name="enemy2" type="CharacterBody2D" unique_id=1766807267 groups=["Enemies"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_4w621")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2095031804]
+texture = ExtResource("2_4w621")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1096427982]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_4jekx")

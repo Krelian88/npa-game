@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://gosrxlgxonio"]
+
+[ext_resource type="Script" uid="uid://cqhwxcpxhdfsl" path="res://Scripts/main_menu.gd" id="1_ftydy"]
+[ext_resource type="Theme" uid="uid://dnc6jb2ooa6pj" path="res://Tres/button_state.tres" id="1_pvidh"]
+[ext_resource type="AudioStream" uid="uid://hrph7g7t0lop" path="res://Assets/Music/bgm_menu_theme_PH.mp3" id="2_87ipw"]
+[ext_resource type="AudioStream" uid="uid://nyvwhi24n10h" path="res://Assets/SoundFX/hover_sound.wav" id="3_kqsxi"]
+[ext_resource type="AudioStream" uid="uid://cnlco3qk3b5lt" path="res://Assets/SoundFX/select_sound.wav" id="4_pvidh"]
+
+[node name="main_menu" type="Control" unique_id=1810595631]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_pvidh")
+script = ExtResource("1_ftydy")
+
+[node name="game_viewport_container" type="SubViewportContainer" parent="." unique_id=408355418]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="game_viewport" type="SubViewport" parent="game_viewport_container" unique_id=1354130873]
+handle_input_locally = false
+size = Vector2i(1080, 720)
+render_target_update_mode = 4
+
+[node name="menu_ui" type="CanvasLayer" parent="." unique_id=1217291418]
+layer = 2
+
+[node name="center" type="CenterContainer" parent="menu_ui" unique_id=1524382114]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="vbox" type="VBoxContainer" parent="menu_ui/center" unique_id=496696911]
+layout_mode = 2
+theme = ExtResource("1_pvidh")
+theme_override_constants/separation = 40
+
+[node name="title_label" type="Label" parent="menu_ui/center/vbox" unique_id=1765395936]
+layout_mode = 2
+text = "PHEWW!"
+horizontal_alignment = 1
+
+[node name="play_button" type="Button" parent="menu_ui/center/vbox" unique_id=1754253628]
+layout_mode = 2
+text = "PLAY"
+
+[node name="options_button" type="Button" parent="menu_ui/center/vbox" unique_id=498601776]
+layout_mode = 2
+text = "OPTIONS"
+
+[node name="quit_button" type="Button" parent="menu_ui/center/vbox" unique_id=386553301]
+layout_mode = 2
+text = "QUIT"
+
+[node name="background" type="ColorRect" parent="." unique_id=1433623502]
+custom_minimum_size = Vector2(1080, 720)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.15170373, 0.15170373, 0.24780053, 0.749)
+
+[node name="menu_bgm" type="AudioStreamPlayer" parent="." unique_id=1090976787]
+stream = ExtResource("2_87ipw")
+volume_db = -7.429
+autoplay = true
+bus = &"BGM"
+
+[node name="hover_sound" type="AudioStreamPlayer" parent="." unique_id=251998410]
+stream = ExtResource("3_kqsxi")
+bus = &"SFX"
+
+[node name="select_sound" type="AudioStreamPlayer" parent="." unique_id=901465477]
+stream = ExtResource("4_pvidh")
+bus = &"SFX"

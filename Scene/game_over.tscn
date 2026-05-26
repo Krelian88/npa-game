@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dp3aoearp1e3a"]
+
+[ext_resource type="AudioStream" uid="uid://nyvwhi24n10h" path="res://Assets/SoundFX/hover_sound.wav" id="1_lwxdm"]
+[ext_resource type="Theme" uid="uid://dnc6jb2ooa6pj" path="res://Tres/button_state.tres" id="1_mjsgh"]
+[ext_resource type="Script" uid="uid://dn4o5qfdhx5su" path="res://Scripts/game_over.gd" id="1_xnpu1"]
+[ext_resource type="AudioStream" uid="uid://cnlco3qk3b5lt" path="res://Assets/SoundFX/select_sound.wav" id="2_mjsgh"]
+
+[node name="game_over" type="Control" unique_id=1237557469]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xnpu1")
+
+[node name="menu_ui" type="CanvasLayer" parent="." unique_id=1294773601]
+process_mode = 3
+layer = 10
+
+[node name="panel" type="Panel" parent="menu_ui" unique_id=2028546140]
+custom_minimum_size = Vector2(400, 250)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -125.0
+offset_right = 200.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="vbox" type="VBoxContainer" parent="menu_ui/panel" unique_id=214933586]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 250.0
+theme = ExtResource("1_mjsgh")
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="title_label" type="Label" parent="menu_ui/panel/vbox" unique_id=282361718]
+layout_mode = 2
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="retry_button" type="Button" parent="menu_ui/panel/vbox" unique_id=1337163854]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "RETRY"
+
+[node name="quit_button" type="Button" parent="menu_ui/panel/vbox" unique_id=1723788681]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "QUIT TO MENU"
+
+[node name="hover_sound" type="AudioStreamPlayer" parent="." unique_id=241505498]
+process_mode = 3
+stream = ExtResource("1_lwxdm")
+bus = &"SFX"
+
+[node name="select_sound" type="AudioStreamPlayer" parent="." unique_id=1706281577]
+process_mode = 3
+stream = ExtResource("2_mjsgh")
+bus = &"SFX"

@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://cdx6n1bxa4cuc"]
+
+[ext_resource type="PackedScene" uid="uid://cpdff5rgptw87" path="res://Scene/player.tscn" id="1_mhtsl"]
+[ext_resource type="Script" uid="uid://cnc5ay6amdguv" path="res://Scripts/game.gd" id="1_w51g1"]
+[ext_resource type="AudioStream" uid="uid://dbsucu1eltsl2" path="res://Assets/Music/bgm_play_PH.mp3" id="3_03iqk"]
+[ext_resource type="AudioStream" uid="uid://cge42cb2ne822" path="res://Assets/Music/boss_bgm_ph.mp3" id="5_ihreq"]
+[ext_resource type="Script" uid="uid://b40evle3s01g7" path="res://Scripts/segment_manager.gd" id="7_h8jt7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ihreq"]
+bg_color = Color(0.8564939, 3.657937e-06, 8.663535e-07, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_thj8p"]
+size = Vector2(20, 3000)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h8jt7"]
+size = Vector2(20, 3000)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sagxc"]
+size = Vector2(1080, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8f6ah"]
+size = Vector2(1080, 20)
+
+[node name="Game" type="Node2D" unique_id=431416297]
+script = ExtResource("1_w51g1")
+
+[node name="Player" parent="." unique_id=1179958325 instance=ExtResource("1_mhtsl")]
+position = Vector2(540, 2800)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1298732474]
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=1570901646]
+offset_left = 27.0
+offset_top = 16.0
+offset_right = 229.0
+offset_bottom = 40.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_ihreq")
+value = 100.0
+show_percentage = false
+
+[node name="bgm" type="AudioStreamPlayer" parent="." unique_id=1446665288]
+process_mode = 3
+stream = ExtResource("3_03iqk")
+volume_db = -11.46
+bus = &"BGM"
+
+[node name="wall_left" type="StaticBody2D" parent="." unique_id=1425731932]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="wall_left" unique_id=1098171130]
+position = Vector2(-10, 1500)
+shape = SubResource("RectangleShape2D_thj8p")
+
+[node name="wall_right" type="StaticBody2D" parent="." unique_id=130992279]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="wall_right" unique_id=1247732764]
+position = Vector2(1090, 1500)
+shape = SubResource("RectangleShape2D_h8jt7")
+
+[node name="wall_top" type="StaticBody2D" parent="." unique_id=1524689290]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="wall_top" unique_id=1108621177]
+position = Vector2(540, -10)
+shape = SubResource("RectangleShape2D_sagxc")
+
+[node name="wall_bottom" type="StaticBody2D" parent="." unique_id=1921305909]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="wall_bottom" unique_id=493603065]
+position = Vector2(540, 3010)
+shape = SubResource("RectangleShape2D_8f6ah")
+
+[node name="segment_manager" type="Node" parent="." unique_id=1737223079]
+script = ExtResource("7_h8jt7")
+
+[node name="boss_bgm" type="AudioStreamPlayer" parent="." unique_id=1884463306]
+stream = ExtResource("5_ihreq")
+bus = &"BGM"

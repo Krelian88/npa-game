@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://biarjprsmq7bd"
-path="res://.godot/imported/pwr_up_hp.png-86c9786497d8100e07784c8412364d00.ctex"
+uid="uid://dafjtmem3htxn"
+path="res://.godot/imported/Purple can.png-62e073e9b00d184f225ac1c628d65e3d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/pwr_up_hp.png"
-dest_files=["res://.godot/imported/pwr_up_hp.png-86c9786497d8100e07784c8412364d00.ctex"]
+source_file="res://Assets/Art/Enemies/Purple can.png"
+dest_files=["res://.godot/imported/Purple can.png-62e073e9b00d184f225ac1c628d65e3d.ctex"]
 
 [params]
 

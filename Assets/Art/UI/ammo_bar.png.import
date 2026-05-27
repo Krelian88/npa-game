@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjlfugrwo6xdo"
-path="res://.godot/imported/Green can.png-252c1ef8e1138aa01e8f1660c7c2360f.ctex"
+uid="uid://dafli22xuagq3"
+path="res://.godot/imported/ammo_bar.png-eb8ca1d123fa6eb4e78c7ea4e5df4a63.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/Green can.png"
-dest_files=["res://.godot/imported/Green can.png-252c1ef8e1138aa01e8f1660c7c2360f.ctex"]
+source_file="res://Assets/Art/UI/ammo_bar.png"
+dest_files=["res://.godot/imported/ammo_bar.png-eb8ca1d123fa6eb4e78c7ea4e5df4a63.ctex"]
 
 [params]
 

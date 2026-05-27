@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://be40xlf0sbpfd"
-path="res://.godot/imported/ammo_bar_empty.png-5e77be810a998531a55071e666b17dd8.ctex"
+uid="uid://bua682p4bec1g"
+path="res://.godot/imported/hp_bar_empty.png-08857d8f57c7b8f4797b0b55a8c14d40.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/ammo_bar_empty.png"
-dest_files=["res://.godot/imported/ammo_bar_empty.png-5e77be810a998531a55071e666b17dd8.ctex"]
+source_file="res://Assets/Art/UI/hp_bar_empty.png"
+dest_files=["res://.godot/imported/hp_bar_empty.png-08857d8f57c7b8f4797b0b55a8c14d40.ctex"]
 
 [params]
 

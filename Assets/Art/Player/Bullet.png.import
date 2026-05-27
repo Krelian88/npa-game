@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxd53pydwy7yn"
-path="res://.godot/imported/hp_bar_complete.png-ddba0042de738312c128cb85a4cd155f.ctex"
+uid="uid://civ02cstnxdbs"
+path="res://.godot/imported/Bullet.png-8adf310f69e088a9f52bf7fe9defae60.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/hp_bar_complete.png"
-dest_files=["res://.godot/imported/hp_bar_complete.png-ddba0042de738312c128cb85a4cd155f.ctex"]
+source_file="res://Assets/Art/Player/Bullet.png"
+dest_files=["res://.godot/imported/Bullet.png-8adf310f69e088a9f52bf7fe9defae60.ctex"]
 
 [params]
 

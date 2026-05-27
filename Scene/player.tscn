@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cpdff5rgptw87"]
 
 [ext_resource type="Script" uid="uid://ceabwcjllqy3n" path="res://Scripts/player.gd" id="1_y8w33"]
-[ext_resource type="Texture2D" uid="uid://drc1qrjhy6oh0" path="res://Assets/Art/Gun.png" id="2_58ae2"]
-[ext_resource type="Texture2D" uid="uid://dkbnocxyngpqx" path="res://Assets/Art/main_character_idle_spritesheet.png" id="2_ivevv"]
+[ext_resource type="Texture2D" uid="uid://drc1qrjhy6oh0" path="res://Assets/Art/Player/Gun.png" id="2_58ae2"]
+[ext_resource type="Texture2D" uid="uid://dkbnocxyngpqx" path="res://Assets/Art/Player/main_character_idle_spritesheet.png" id="2_ivevv"]
 [ext_resource type="Script" uid="uid://b44uwst488urn" path="res://Scripts/gun.gd" id="3_ivevv"]
 [ext_resource type="AudioStream" uid="uid://b8k8ao7ofu5s" path="res://Assets/SoundFX/laser_shot.mp3" id="5_ivevv"]
 

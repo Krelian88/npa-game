@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv5djrdktdgf1"
-path="res://.godot/imported/pwr_up_grenade.png-9468151921db0f238d9548553cdbe53f.ctex"
+uid="uid://biarjprsmq7bd"
+path="res://.godot/imported/pwr_up_hp.png-4f95f9241e79512b352d0adfef5b6b99.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/pwr_up_grenade.png"
-dest_files=["res://.godot/imported/pwr_up_grenade.png-9468151921db0f238d9548553cdbe53f.ctex"]
+source_file="res://Assets/Art/Power_Ups/pwr_up_hp.png"
+dest_files=["res://.godot/imported/pwr_up_hp.png-4f95f9241e79512b352d0adfef5b6b99.ctex"]
 
 [params]
 

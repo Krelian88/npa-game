@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d0yuc8l5f8s1e"]
 
 [ext_resource type="Script" uid="uid://bvpl1h8lwarhw" path="res://Scripts/enemy3.gd" id="1_0biai"]
-[ext_resource type="Texture2D" uid="uid://bjlfugrwo6xdo" path="res://Assets/Art/Green can.png" id="2_0biai"]
+[ext_resource type="Texture2D" uid="uid://bjlfugrwo6xdo" path="res://Assets/Art/Enemies/Green can.png" id="2_0biai"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jekx"]
 size = Vector2(36, 66)

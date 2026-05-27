@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqb0winwt23h6"
-path="res://.godot/imported/boss.png-f4c42582690bf917a03d14518c9b109f.ctex"
+uid="uid://djegq4ehthd11"
+path="res://.godot/imported/pwr_up_triple.png-9e867543860e16286cafdb4154f09f70.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/boss.png"
-dest_files=["res://.godot/imported/boss.png-f4c42582690bf917a03d14518c9b109f.ctex"]
+source_file="res://Assets/Art/Power_Ups/pwr_up_triple.png"
+dest_files=["res://.godot/imported/pwr_up_triple.png-9e867543860e16286cafdb4154f09f70.ctex"]
 
 [params]
 

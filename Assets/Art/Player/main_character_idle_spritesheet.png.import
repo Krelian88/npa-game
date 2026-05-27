@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://civ02cstnxdbs"
-path="res://.godot/imported/Bullet.png-48c59ff3e6e5a1122c6218c5db0d8e95.ctex"
+uid="uid://dkbnocxyngpqx"
+path="res://.godot/imported/main_character_idle_spritesheet.png-63f47983deb7a58935b4edb9cbabe1a0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/Bullet.png"
-dest_files=["res://.godot/imported/Bullet.png-48c59ff3e6e5a1122c6218c5db0d8e95.ctex"]
+source_file="res://Assets/Art/Player/main_character_idle_spritesheet.png"
+dest_files=["res://.godot/imported/main_character_idle_spritesheet.png-63f47983deb7a58935b4edb9cbabe1a0.ctex"]
 
 [params]
 

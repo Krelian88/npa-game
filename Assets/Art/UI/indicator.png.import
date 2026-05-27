@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfxk7wr2p3qvu"
-path="res://.godot/imported/lives_icon.png-f634f4ea4600f04e9f642f4eaffa4ddf.ctex"
+uid="uid://dpamctiboxck"
+path="res://.godot/imported/indicator.png-ec489e46d012b52074cdbefbdb2cd50a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/lives_icon.png"
-dest_files=["res://.godot/imported/lives_icon.png-f634f4ea4600f04e9f642f4eaffa4ddf.ctex"]
+source_file="res://Assets/Art/UI/indicator.png"
+dest_files=["res://.godot/imported/indicator.png-ec489e46d012b52074cdbefbdb2cd50a.ctex"]
 
 [params]
 

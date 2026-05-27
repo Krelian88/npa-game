@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dd5c2t6wneqoy" path="res://Scripts/bullet.gd" id="1_k7h5k"]
 [ext_resource type="AudioStream" uid="uid://vc3lhs6p527l" path="res://Assets/SoundFX/target_hit.mp3" id="3_jm66p"]
-[ext_resource type="Texture2D" uid="uid://b3ejde18kavai" path="res://Assets/Art/Bullet_02_spritesheet.png" id="3_sj187"]
+[ext_resource type="Texture2D" uid="uid://b3ejde18kavai" path="res://Assets/Art/Player/Bullet_02_spritesheet.png" id="3_sj187"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kt36j"]
 atlas = ExtResource("3_sj187")

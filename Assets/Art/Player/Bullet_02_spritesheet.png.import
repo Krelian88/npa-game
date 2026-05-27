@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpamctiboxck"
-path="res://.godot/imported/indicator.png-203bd625bc03b836b3e9c270637d77b3.ctex"
+uid="uid://b3ejde18kavai"
+path="res://.godot/imported/Bullet_02_spritesheet.png-4459334c97c12062d23655c59677c466.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/indicator.png"
-dest_files=["res://.godot/imported/indicator.png-203bd625bc03b836b3e9c270637d77b3.ctex"]
+source_file="res://Assets/Art/Player/Bullet_02_spritesheet.png"
+dest_files=["res://.godot/imported/Bullet_02_spritesheet.png-4459334c97c12062d23655c59677c466.ctex"]
 
 [params]
 

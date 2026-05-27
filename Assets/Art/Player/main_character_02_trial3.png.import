@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8s8vgsegvoa3"
-path="res://.godot/imported/hp_bar.png-d3a51cfcf83f0249616df6db53e220e9.ctex"
+uid="uid://r42hosc38sq7"
+path="res://.godot/imported/main_character_02_trial3.png-93c776fbdcb2e8f66ac35942abc32415.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/hp_bar.png"
-dest_files=["res://.godot/imported/hp_bar.png-d3a51cfcf83f0249616df6db53e220e9.ctex"]
+source_file="res://Assets/Art/Player/main_character_02_trial3.png"
+dest_files=["res://.godot/imported/main_character_02_trial3.png-93c776fbdcb2e8f66ac35942abc32415.ctex"]
 
 [params]
 

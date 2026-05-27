@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djegq4ehthd11"
-path="res://.godot/imported/pwr_up_triple.png-99cff0e7c247c3b6d1a976047110849a.ctex"
+uid="uid://65d4hp0dbvoq"
+path="res://.godot/imported/enemy_01_trial1.png-4a16f421469e72a916a0531f8b86b423.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/pwr_up_triple.png"
-dest_files=["res://.godot/imported/pwr_up_triple.png-99cff0e7c247c3b6d1a976047110849a.ctex"]
+source_file="res://Assets/Art/Enemies/enemy_01_trial1.png"
+dest_files=["res://.godot/imported/enemy_01_trial1.png-4a16f421469e72a916a0531f8b86b423.ctex"]
 
 [params]
 

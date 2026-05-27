@@ -79,6 +79,11 @@ var enemy_scenes := [
 ]
 var boss_scene = preload("res://Scene/boss.tscn")
 var boss_alive := false
+var waiting_for_player := false
+var _indicator_tween : Tween = null
+var move_indicator_left : AnimatedSprite2D = null
+var move_indicator_right : AnimatedSprite2D = null
+var indicator_sfx : AudioStreamPlayer = null
 #VARIABLES END ****************************************************
 	
 #FUNCTIONS START HERE: ****************************************************
@@ -183,9 +188,48 @@ func _on_segment_complete() -> void:
 	print("[SegmentManager] Segment %d cleared!" % (current_segment + 1))
 	remove_top_wall()
 	place_bottom_wall()
-	advance_to_next_segment()
-	if current_segment < SEGMENT_COUNT:
-		transition_to_next_segment()
+	if current_segment < SEGMENT_COUNT - 1:
+		_show_indicator()
+		waiting_for_player = true
+	else:
+		advance_to_next_segment()
+	
+func _process(_delta: float) -> void:
+	if waiting_for_player and player:
+		if player.global_position.y < SEGMENTS[current_segment]["y_min"] - 50:
+			waiting_for_player = false
+			_hide_indicator()
+			advance_to_next_segment()
+	
+func _show_indicator() -> void:
+	for ind in [move_indicator_left, move_indicator_right]:
+		if ind:
+			ind.visible = true
+			ind.play()
+	if indicator_sfx:
+		indicator_sfx.play()
+	_indicator_tween = create_tween()
+	_indicator_tween.set_loops()          # change to set_loops(6) to limit blink count
+	_indicator_tween.tween_interval(0.4)  # how long it stays VISIBLE
+	_indicator_tween.tween_callback(func():
+		for ind in [move_indicator_left, move_indicator_right]:
+			if ind: ind.visible = false
+	)
+	_indicator_tween.tween_interval(0.3)  # how long it stays INVISIBLE
+	_indicator_tween.tween_callback(func():
+		for ind in [move_indicator_left, move_indicator_right]:
+			if ind: ind.visible = true
+		if indicator_sfx:
+			indicator_sfx.play()          # beep on every blink
+	)
+	
+func _hide_indicator() -> void:
+	if _indicator_tween:
+		_indicator_tween.kill()
+		_indicator_tween = null
+	for ind in [move_indicator_left, move_indicator_right]:
+		if ind:
+			ind.visible = false
 	
 func advance_to_next_segment() -> void:
 		if spawn_timer:
@@ -197,20 +241,21 @@ func advance_to_next_segment() -> void:
 		else:
 			start_segment()
 	
-func transition_to_next_segment() -> void:
-	var seg: Dictionary = SEGMENTS[current_segment]
-	var target_pos := Vector2(seg["start_x"], seg["start_y"])
-	
-	player.input_enabled = false
-	
-	var tween := create_tween()
-	tween.set_ease(Tween.EASE_IN_OUT)
-	tween.set_trans(Tween.TRANS_SINE)
-	tween.tween_property(player, "position", target_pos, 2.0)
-	tween.tween_callback(func():
-		if not player.attract_mode:
-			player.input_enabled = true
-	)
+# ********** THIS FUNCTION IS NO LONGER NEEDED BUT KEPT COMMENT OUT AS REFERENCE ************
+#func transition_to_next_segment() -> void:
+#	var seg: Dictionary = SEGMENTS[current_segment]
+#	var target_pos := Vector2(seg["start_x"], seg["start_y"])
+#	
+#	player.input_enabled = false
+#	
+#	var tween := create_tween()
+#	tween.set_ease(Tween.EASE_IN_OUT)
+#	tween.set_trans(Tween.TRANS_SINE)
+#	tween.tween_property(player, "position", target_pos, 2.0)
+#	tween.tween_callback(func():
+#		if not player.attract_mode:
+#			player.input_enabled = true
+#	)
 	
 func create_wall(y_pos: float, one_way: bool = false) -> StaticBody2D:
 	var wall := StaticBody2D.new()

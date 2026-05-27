@@ -4,6 +4,9 @@ extends Node2D
 @onready var bgm = $bgm
 @onready var boss_bgm = $boss_bgm
 @onready var segment_manager = $segment_manager
+@onready var indicator_sfx = $indicator_sfx
+@onready var move_indicator_left = $CanvasLayer/move_indicator_left
+@onready var move_indicator_right = $CanvasLayer/move_indicator_right
 # ONREADY VAR ENDS *********************************************
 	
 # VARIABLES START HERE: *************************************************
@@ -20,6 +23,9 @@ const SPAWN_MARGIN:= 60    #keep enemies away from the very edge
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	segment_manager.bgm = bgm
+	segment_manager.indicator_sfx = indicator_sfx
+	segment_manager.move_indicator_left = move_indicator_left
+	segment_manager.move_indicator_right = move_indicator_right
 	segment_manager.boss_bgm = boss_bgm
 	segment_manager.all_segments_cleared.connect(_on_game_won)
 	var vp_w := int(get_viewport_rect().size.x)

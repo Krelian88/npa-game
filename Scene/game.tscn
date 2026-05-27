@@ -3,11 +3,28 @@
 [ext_resource type="PackedScene" uid="uid://cpdff5rgptw87" path="res://Scene/player.tscn" id="1_mhtsl"]
 [ext_resource type="Script" uid="uid://cnc5ay6amdguv" path="res://Scripts/game.gd" id="1_w51g1"]
 [ext_resource type="AudioStream" uid="uid://dbsucu1eltsl2" path="res://Assets/Music/bgm_play_PH.mp3" id="3_03iqk"]
+[ext_resource type="Texture2D" uid="uid://dpamctiboxck" path="res://Assets/Art/indicator.png" id="3_h8jt7"]
 [ext_resource type="AudioStream" uid="uid://cge42cb2ne822" path="res://Assets/Music/boss_bgm_ph.mp3" id="5_ihreq"]
 [ext_resource type="Script" uid="uid://b40evle3s01g7" path="res://Scripts/segment_manager.gd" id="7_h8jt7"]
+[ext_resource type="AudioStream" uid="uid://cstesuymirlut" path="res://Assets/SoundFX/indicator.wav" id="7_sagxc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ihreq"]
 bg_color = Color(0.8564939, 3.657937e-06, 8.663535e-07, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h8jt7"]
+atlas = ExtResource("3_h8jt7")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sagxc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h8jt7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_thj8p"]
 size = Vector2(20, 3000)
@@ -37,6 +54,18 @@ offset_bottom = 40.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_ihreq")
 value = 100.0
 show_percentage = false
+
+[node name="move_indicator_left" type="AnimatedSprite2D" parent="CanvasLayer" unique_id=2008894654]
+visible = false
+position = Vector2(150, 180)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_sagxc")
+
+[node name="move_indicator_right" type="AnimatedSprite2D" parent="CanvasLayer" unique_id=1459927401]
+visible = false
+position = Vector2(910, 180)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_sagxc")
 
 [node name="bgm" type="AudioStreamPlayer" parent="." unique_id=1446665288]
 process_mode = 3
@@ -74,3 +103,7 @@ script = ExtResource("7_h8jt7")
 [node name="boss_bgm" type="AudioStreamPlayer" parent="." unique_id=1884463306]
 stream = ExtResource("5_ihreq")
 bus = &"BGM"
+
+[node name="indicator_sfx" type="AudioStreamPlayer" parent="." unique_id=1296970535]
+stream = ExtResource("7_sagxc")
+bus = &"SFX"

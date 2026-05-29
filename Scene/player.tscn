@@ -223,6 +223,8 @@ _data = {
 
 [node name="Player" type="CharacterBody2D" unique_id=1179958325]
 script = ExtResource("1_y8w33")
+max_special_ammo = 25
+grenades_per_pickup = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=903876814]
 texture = ExtResource("2_ivevv")

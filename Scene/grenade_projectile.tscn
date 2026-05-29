@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cyu0inahtop0e"]
+
+[ext_resource type="Script" uid="uid://drvquglo2s5cy" path="res://Scripts/grenade_projectile.gd" id="1_4btxn"]
+[ext_resource type="Texture2D" uid="uid://nyj3w660nupx" path="res://Assets/Art/Player/grenade.png" id="2_g4lh5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4adm"]
+atlas = ExtResource("2_g4lh5")
+region = Rect2(0, 0, 22, 22)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oudh3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4adm")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yea01"]
+radius = 8.0
+
+[node name="grenade_projectile" type="Area2D" unique_id=48881923]
+script = ExtResource("1_4btxn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1591976766]
+sprite_frames = SubResource("SpriteFrames_oudh3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1780599702]
+shape = SubResource("CircleShape2D_yea01")

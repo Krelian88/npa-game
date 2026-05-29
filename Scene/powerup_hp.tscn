@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://d0ss4itt0eqtw"]
+
+[ext_resource type="Script" uid="uid://56aww513mlnu" path="res://Scripts/powerup.gd" id="1_tos1a"]
+[ext_resource type="Texture2D" uid="uid://biarjprsmq7bd" path="res://Assets/Art/Power_Ups/pwr_up_hp.png" id="1_x7r1n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tos1a"]
+atlas = ExtResource("1_x7r1n")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lnbw6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tos1a")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r84i4"]
+radius = 16.0
+
+[node name="powerup_hp" type="Area2D" unique_id=655657752]
+script = ExtResource("1_tos1a")
+type = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2070415796]
+sprite_frames = SubResource("SpriteFrames_lnbw6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1271111790]
+shape = SubResource("CircleShape2D_r84i4")

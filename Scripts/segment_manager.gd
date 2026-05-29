@@ -14,13 +14,25 @@ const SEGMENT_HEIGHT := 750 # LEVEL_HEIGHT PER SEGMENT_COUNT
 
 # SEGMENTS SIZE AND DIVISION:
 const SEGMENTS := [
-	{"y_min": 2250, "y_max": 3000, "start_x": 540, "start_y": 2850, "enemies": 3},
-	{"y_min": 1500, "y_max": 2250, "start_x": 540, "start_y": 2100, "enemies": 6},
-	{"y_min": 750,  "y_max": 1500, "start_x": 540, "start_y": 1350, "enemies": 10},
+	{"y_min": 2250, "y_max": 3000, "start_x": 540, "start_y": 2850, "enemies": 35},
+	{"y_min": 1500, "y_max": 2250, "start_x": 540, "start_y": 2100, "enemies": 35},
+	{"y_min": 750,  "y_max": 1500, "start_x": 540, "start_y": 1350, "enemies": 35},
 	{"y_min": 0,    "y_max": 750,  "start_x": 540, "start_y": 600, "enemies": 0}
 ]
 const SPAWN_MARGIN := 60
 
+# The next CONSTANT defines which enemy types can spawn in each segment.
+# Each array is a "pool" — the code picks a random index from it.
+# More copies of an index = higher probability of that type spawning.
+# Index 0 = enemy.tscn, Index 1 = enemy2.tscn, Index 2 = enemy3.tscn
+# Example: [0, 0, 1] means 67% chance of type 1, 33% chance of type 2.
+# To adjust difficulty, add or remove entries — only the ratio matters, not the total count.
+const SEGMENT_ENEMY_POOLS := [
+	[0, 0, 0, 0, 0],        # Segment 0: type 1 only
+	[0, 0, 0, 1, 1, 2],     # Segment 1: type 1 dominant, type 2 present, type 3 rare
+	[0, 0, 1, 1, 2, 2],     # Segment 2: all three types equally
+	[0, 1, 2],              # Segment 3 (boss minions): all three types equally
+]
 # SEGMENTS POINT OF ENTRY FOR ENEMIES:
 const SPAWN_ENTRIES := [
 	# Segment 0 (y: 2250-3000) — top, left, right
@@ -84,6 +96,7 @@ var _indicator_tween : Tween = null
 var move_indicator_left : AnimatedSprite2D = null
 var move_indicator_right : AnimatedSprite2D = null
 var indicator_sfx : AudioStreamPlayer = null
+var _completion_pending := false
 #VARIABLES END ****************************************************
 	
 #FUNCTIONS START HERE: ****************************************************
@@ -92,6 +105,7 @@ func _ready() -> void:
 	draw_debug_boundaries.call_deferred()
 	
 func start_segment() -> void:
+	_completion_pending = false
 	enemies_alive = SEGMENTS[current_segment]["enemies"]
 	print("[SegmentManager] Starting segment %d with %d enemies" % [current_segment+ 1, enemies_alive])
 	place_top_wall()
@@ -155,40 +169,51 @@ func _on_spawn_timer_timeout() -> void:
 		spawn_timer.queue_free()
 		spawn_timer = null
 		return
-	var seg : Dictionary = SEGMENTS[current_segment]
-	var batch := mini(randi_range(1, 3), enemies_to_spawn)
+	var entries : Array = SPAWN_ENTRIES[current_segment]
+	var entry : Dictionary = entries[randi() % entries.size()]
+	var batch := mini(randi_range(2, 4), enemies_to_spawn) # this changes the amount of enemies per wave, more is more
 	for i in range(batch):
-		var scene = enemy_scenes[randi() % enemy_scenes.size()]
+		var pool : Array = SEGMENT_ENEMY_POOLS[current_segment]
+		var scene = enemy_scenes[pool[randi() % pool.size()]]
 		var new_enemy : EnemyBase = scene.instantiate()
-		var entries : Array = SPAWN_ENTRIES[current_segment]
-		var entry : Dictionary = entries[randi() % entries.size()]
-		new_enemy.position = entry["from"]
+		new_enemy.collision_mask = 0
+		var spawn_offset := Vector2(randf_range(-25, 25), randf_range(-15, 15))
+		new_enemy.position = entry["from"] + spawn_offset
 		new_enemy.is_entering = true
 		var tween := create_tween()
 		tween.set_ease(Tween.EASE_OUT)
 		tween.set_trans(Tween.TRANS_QUAD)
 		tween.tween_property(new_enemy, "position", entry["to"], 0.8)
+		var enemy_id := new_enemy.get_instance_id()
 		tween.tween_callback(func():
-			if is_instance_valid(new_enemy):
-				new_enemy.is_entering = false
-		)
+			var e = instance_from_id(enemy_id) if enemy_id else null
+			if is_instance_valid(e):
+				e.is_entering = false
+)
 		new_enemy.died.connect(on_enemy_died)
 		get_parent().add_child(new_enemy)
 		enemies_to_spawn -= 1
-	spawn_timer.wait_time = randf_range(1.0, 3.0)
+	spawn_timer.wait_time = randf_range(0.5, 1.5) # this changes the time between waves of attacks, less is faster
 	
 func on_enemy_died() -> void:
 	enemies_alive = max(0, enemies_alive - 1)
-	print("[SegmentManager] Enemies remainig: %d" % enemies_alive)
-	if enemies_alive <= 0 and enemies_to_spawn <= 0 and not boss_alive:
+	print("[SegmentManager] Enemies remaining: %d, to spawn: %d" % [enemies_alive, enemies_to_spawn])
+	if enemies_alive <= 0 and enemies_to_spawn <= 0 and not boss_alive and not waiting_for_player and not _completion_pending:
+		_completion_pending = true
 		_on_segment_complete.call_deferred()
 	
 func _on_segment_complete() -> void:
+	_completion_pending = false
+	if current_segment >= SEGMENT_COUNT:
+		return
+	if waiting_for_player:
+		return
+	print("[DEBUG] Segment complete triggered: enemies_alive=%d, enemies_to_spawn=%d" % [enemies_alive, enemies_to_spawn])
 	segment_cleared.emit(current_segment)
 	print("[SegmentManager] Segment %d cleared!" % (current_segment + 1))
 	remove_top_wall()
-	place_bottom_wall()
 	if current_segment < SEGMENT_COUNT - 1:
+		place_bottom_wall()
 		_show_indicator()
 		waiting_for_player = true
 	else:
@@ -202,6 +227,8 @@ func _process(_delta: float) -> void:
 			advance_to_next_segment()
 	
 func _show_indicator() -> void:
+	if _indicator_tween:
+		_indicator_tween.kill()
 	for ind in [move_indicator_left, move_indicator_right]:
 		if ind:
 			ind.visible = true

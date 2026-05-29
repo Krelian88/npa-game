@@ -54,11 +54,11 @@ func _ready() -> void:
 	_start_shoot_timer()
 	_start_charge_timer()
 	
-func take_damage() -> void:
-	health -= 1
+func take_damage(amount: int = 1) -> void:
+	health -= amount
 	_flash_damage()
 	print("[Boss] Health: %d" % health)
-	if health <= MAX_HEALTH / 2 and phase == 1:
+	if health <= MAX_HEALTH / 2.0 and phase == 1:
 		_enter_phase_2()
 	if health <= 0:
 		died.emit()
@@ -174,9 +174,11 @@ func _spawn_minion() -> void:
 		tween.set_ease(Tween.EASE_OUT)
 		tween.set_trans(Tween.TRANS_QUAD)
 		tween.tween_property(minion, "position", entry["to"], 0.8)
+		var enemy_id := minion.get_instance_id()
 		tween.tween_callback(func():
-			if is_instance_valid(minion):
-				minion.is_entering = false
+			var e = instance_from_id(enemy_id) if enemy_id else null
+			if is_instance_valid(e):
+				e.is_entering = false
 		)
 		minion.died.connect(segment_manager.on_enemy_died)
 		get_parent().add_child(minion)

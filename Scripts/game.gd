@@ -7,6 +7,9 @@ extends Node2D
 @onready var indicator_sfx = $indicator_sfx
 @onready var move_indicator_left = $CanvasLayer/move_indicator_left
 @onready var move_indicator_right = $CanvasLayer/move_indicator_right
+@onready var ammo_bar = $CanvasLayer/ammo_bar
+@onready var grenade_counter_label = $CanvasLayer/grenade_counter
+@onready var player = $Player
 # ONREADY VAR ENDS *********************************************
 	
 # VARIABLES START HERE: *************************************************
@@ -42,8 +45,7 @@ func _ready() -> void:
 	
 	bgm.play()
 	bgm.finished.connect(bgm.play)
-	
-	var player = get_node("Player")
+		
 	player.input_enabled = false
 	player.global_position = Vector2(540, 3200)
 	var entrance := create_tween()
@@ -53,6 +55,11 @@ func _ready() -> void:
 	entrance.tween_callback(func(): player.input_enabled = true)
 	entrance.tween_interval(0.5)
 	entrance.tween_callback(func(): segment_manager.start_segment())
+	player.ammo_changed.connect(_on_ammo_changed)
+	player.weapon_mode_changed.connect(_on_weapon_mode_changed)
+	player.grenade_count_changed.connect(_on_grenade_count_changed)
+	ammo_bar.visible = false
+	grenade_counter_label.visible = false
 	
 func _on_game_won() -> void:
 	print("YOU WIN!")
@@ -60,7 +67,8 @@ func _on_game_won() -> void:
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	var player = get_node("Player")
+	if not is_instance_valid(player):
+		return
 	$CanvasLayer/ProgressBar.value = player.player_health
 	if Input.is_action_just_pressed("ui_cancel") and not get_tree().paused and not player.attract_mode:
 		get_tree().paused = true
@@ -69,4 +77,14 @@ func _process(_delta: float) -> void:
 		menu.bgm = bgm
 		add_child(menu)
 	
+func _on_ammo_changed(current: int, max_val: int) -> void:
+	ammo_bar.max_value = max_val
+	ammo_bar.value = current
+	
+func _on_weapon_mode_changed(mode: int) -> void:
+	ammo_bar.visible = mode != 0
+	
+func _on_grenade_count_changed(count: int) -> void:
+	grenade_counter_label.visible = count > 0
+	grenade_counter_label.text = "GRENADES: %d" % count
 # FUNTIONS END HERE ***************************************

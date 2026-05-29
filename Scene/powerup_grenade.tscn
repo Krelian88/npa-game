@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://c8mv5vjrhmm8y"]
+
+[ext_resource type="Script" uid="uid://56aww513mlnu" path="res://Scripts/powerup.gd" id="1_v2lt8"]
+[ext_resource type="Texture2D" uid="uid://bv5djrdktdgf1" path="res://Assets/Art/Power_Ups/pwr_up_grenade.png" id="2_hlymg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yvm5a"]
+atlas = ExtResource("2_hlymg")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_abr17"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yvm5a")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_royog"]
+radius = 16.0
+
+[node name="powerup_grenade" type="Area2D" unique_id=2043562619]
+script = ExtResource("1_v2lt8")
+type = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1248681275]
+sprite_frames = SubResource("SpriteFrames_abr17")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=867238163]
+shape = SubResource("CircleShape2D_royog")

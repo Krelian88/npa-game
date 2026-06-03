@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://8s8vgsegvoa3" path="res://Assets/Art/UI/hp_bar.png" id="5_yjs1f"]
 [ext_resource type="Script" uid="uid://b40evle3s01g7" path="res://Scripts/segment_manager.gd" id="7_h8jt7"]
 [ext_resource type="AudioStream" uid="uid://cstesuymirlut" path="res://Assets/SoundFX/indicator.wav" id="7_sagxc"]
+[ext_resource type="Texture2D" uid="uid://cfxk7wr2p3qvu" path="res://Assets/Art/UI/lives_icon.png" id="9_ha7wd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h8jt7"]
 atlas = ExtResource("3_h8jt7")
@@ -88,6 +89,22 @@ offset_left = 543.0
 offset_top = 660.0
 offset_right = 583.0
 offset_bottom = 683.0
+
+[node name="life_1" type="TextureRect" parent="CanvasLayer" unique_id=244808459]
+offset_left = 169.0
+offset_top = 64.0
+offset_right = 210.42857
+offset_bottom = 105.42857
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("9_ha7wd")
+
+[node name="life_2" type="TextureRect" parent="CanvasLayer" unique_id=1647360321]
+offset_left = 205.0
+offset_top = 64.0
+offset_right = 246.42857
+offset_bottom = 105.42857
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("9_ha7wd")
 
 [node name="bgm" type="AudioStreamPlayer" parent="." unique_id=1446665288]
 process_mode = 3

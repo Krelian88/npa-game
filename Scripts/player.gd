@@ -27,6 +27,9 @@ var grenade_scene = preload("res://Scene/grenade_projectile.tscn")
 @export var max_special_ammo := 10
 @export var hp_restore_percent := 15
 @export var grenades_per_pickup := 1
+var lives := 3
+var _is_dead := false
+var _blink_tween : Tween
 #VARIABLES END *******************************************************
 
 # SIGNALS START HERE: ***********************************************
@@ -35,6 +38,8 @@ signal ammo_changed(current_ammo: int, max_ammo: int)
 signal weapon_mode_changed(mode: int)
 signal grenade_count_changed(count: int)
 signal health_changed(new_health: int)
+signal lives_changed(new_lives: int)
+signal player_respawn_needed
 # SIGNALS END ****************************************************
 
 #CONSTANTS STATRS HERE: *************************************************
@@ -55,9 +60,14 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since
 func _process(_delta: float) -> void:
-	if player_health <= 0:
+	if player_health <= 0 and not _is_dead:
+		_is_dead = true
 		if attract_mode:
 			attract_game_over.emit()
+		elif lives > 1:
+			lives -= 1
+			lives_changed.emit(lives)
+			player_respawn_needed.emit()
 		else:
 			get_tree().change_scene_to_file("res://Scene/game_over.tscn")
 
@@ -111,13 +121,15 @@ func _on_invincibility_timer_timeout() -> void:
 	modulate = Color.WHITE #Changes colour back to normal!
 
 func _start_blink() -> void:
-	var tween := create_tween()
-	tween.set_loops(12)
-	tween.tween_callback(func(): visible = false)
-	tween.tween_interval(0.1)
-	tween.tween_callback(func(): visible = true)
-	tween.tween_interval(0.1)
-	await tween.finished
+	if _blink_tween:
+		_blink_tween.kill()
+	_blink_tween = create_tween()
+	_blink_tween.set_loops(12)
+	_blink_tween.tween_callback(func(): visible = false)
+	_blink_tween.tween_interval(0.1)
+	_blink_tween.tween_callback(func(): visible = true)
+	_blink_tween.tween_interval(0.1)
+	await _blink_tween.finished
 	is_invincible = false
 	visible = true
 
@@ -189,4 +201,28 @@ func _on_jump_timer_timeout() -> void:
 
 func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
 	is_jumping = false
+
+func respawn() -> void:
+	if _blink_tween:
+		_blink_tween.kill()
+		_blink_tween = null
+	player_health = 100
+	health_changed.emit(player_health)
+	_is_dead = false
+	modulate = Color.WHITE
+	visible = true
+	is_invincible = true
+	_blink_tween = create_tween()
+	_blink_tween.set_loops()
+	_blink_tween.tween_callback(func(): visible = false)
+	_blink_tween.tween_interval(0.15)
+	_blink_tween.tween_callback(func(): visible = true)
+	_blink_tween.tween_interval(0.15)
+
+func end_invincibility() -> void:
+	if _blink_tween:
+		_blink_tween.kill()
+		_blink_tween = null
+	is_invincible = false
+	visible = true
 #FUNCTIONS END HERE **************************************************

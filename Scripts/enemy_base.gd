@@ -1,10 +1,10 @@
 class_name EnemyBase
 extends CharacterBody2D
-	
+
 # SIGNALS START HERE: *****************************
 signal died # ← declares the signal
 # SIGNALS END ************************************
-	
+
 # VARIABLES START HERE: ******************************
 var enemy_health = 0
 var speed = 0
@@ -19,7 +19,7 @@ var _pause_timer := -1.0  # -1 means not yet initialised
 var _is_paused := false
 var _is_dead := false
 # VARIABLES END *************************************
-	
+
 # FUNCTIONS START HERE: ****************************
 func take_damage(amount: int = 1) -> void:
 	if _is_dead:
@@ -37,10 +37,10 @@ func _try_drop_powerup() -> void:
 		var pickup = scene.instantiate()
 		pickup.global_position = global_position
 		get_parent().call_deferred("add_child", pickup)
-	
+
 func _ready() -> void:
 	collision_mask = 0
-	
+
 func _physics_process(delta: float) -> void:
 	if is_entering:
 		return
@@ -55,7 +55,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			_pause_timer = randf_range(1.0, 3.5)   # move duration
 	var player = get_parent().get_node("Player")
-	if player and not _is_paused:
+	if player and not _is_paused and player.input_enabled:
 		var direction = global_position.direction_to(player.global_position)
 		velocity = speed * direction
 	else:

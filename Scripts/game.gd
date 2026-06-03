@@ -10,6 +10,8 @@ extends Node2D
 @onready var ammo_bar = $CanvasLayer/ammo_bar
 @onready var grenade_counter_label = $CanvasLayer/grenade_counter
 @onready var player = $Player
+@onready var life_1 = $CanvasLayer/life_1
+@onready var life_2 = $CanvasLayer/life_2
 # ONREADY VAR ENDS *********************************************
 
 # VARIABLES START HERE: *************************************************
@@ -60,6 +62,8 @@ func _ready() -> void:
 	player.weapon_mode_changed.connect(_on_weapon_mode_changed)
 	player.grenade_count_changed.connect(_on_grenade_count_changed)
 	player.health_changed.connect(_on_health_changed)
+	player.lives_changed.connect(_on_lives_changed)
+	player.player_respawn_needed.connect(_on_player_respawn_needed)
 	ammo_bar.visible = false
 	grenade_counter_label.visible = false
 
@@ -96,4 +100,23 @@ func _on_health_changed(new_health: int) -> void:
 	_hp_tween.set_ease(Tween.EASE_OUT)
 	_hp_tween.set_trans(Tween.TRANS_QUAD)
 	_hp_tween.tween_property($CanvasLayer/hp_bar, "value", float(new_health), 0.3)
+
+func _on_lives_changed(new_lives: int) -> void:
+	life_1.visible = new_lives >= 2
+	life_2.visible = new_lives >= 3
+
+func _on_player_respawn_needed() -> void:
+	player.input_enabled = false
+	await get_tree().create_timer(2.0).timeout # Time that takes for the player to get back into the scene.
+	var seg = SegmentManager.SEGMENTS[segment_manager.current_segment]
+	player.global_position = Vector2(seg["start_x"], seg["y_max"] + 100)
+	player.respawn()
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(player, "global_position", Vector2(seg["start_x"], seg["y_max"] - 150), 2.0)
+	await tween.finished
+	player.input_enabled = true
+	await get_tree().create_timer(1.0).timeout
+	player.end_invincibility()
 # FUNTIONS END HERE ***************************************

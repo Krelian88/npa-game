@@ -2,7 +2,7 @@ class_name EnemyBase
 extends CharacterBody2D
 
 # SIGNALS START HERE: *****************************
-signal died # ← declares the signal
+signal died(points: int) # ← declares the signal
 # SIGNALS END ************************************
 
 # VARIABLES START HERE: ******************************
@@ -18,6 +18,7 @@ var _powerup_scenes := [
 var _pause_timer := -1.0  # -1 means not yet initialised
 var _is_paused := false
 var _is_dead := false
+var points: int = 0
 # VARIABLES END *************************************
 
 # FUNCTIONS START HERE: ****************************
@@ -28,7 +29,7 @@ func take_damage(amount: int = 1) -> void:
 	if enemy_health <= 0:
 		_is_dead = true
 		_try_drop_powerup()
-		died.emit() # ← broadcasts the signal before disappearing
+		died.emit(points) # ← broadcasts the signal before disappearing
 		queue_free()
 
 func _try_drop_powerup() -> void:

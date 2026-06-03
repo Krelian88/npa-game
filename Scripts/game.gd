@@ -12,6 +12,7 @@ extends Node2D
 @onready var player = $Player
 @onready var life_1 = $CanvasLayer/life_1
 @onready var life_2 = $CanvasLayer/life_2
+@onready var score_label = $CanvasLayer/score_label
 # ONREADY VAR ENDS *********************************************
 
 # VARIABLES START HERE: *************************************************
@@ -19,10 +20,13 @@ var coin = preload("res://Scene/coin.tscn")
 var target = preload("res://Scene/target.tscn")
 var pause_menu = preload("res://Scene/pause_menu.tscn")
 var _hp_tween : Tween
+var _displayed_score: float = 0.0
+var _score_tween: Tween
 # VARIABLES ENDS *******************************************************
 
 # CONSTANTS START HERE: ********************************************
 const SPAWN_MARGIN:= 60    #keep enemies away from the very edge
+const SCORE_ROLL_SPEED := 0.4  # seconds to roll up — adjust this to taste
 # CONSTANTS END ***********************************************
 
 # FUNCTIONS START HERE: *********************************************
@@ -64,8 +68,12 @@ func _ready() -> void:
 	player.health_changed.connect(_on_health_changed)
 	player.lives_changed.connect(_on_lives_changed)
 	player.player_respawn_needed.connect(_on_player_respawn_needed)
+	segment_manager.score_earned.connect(_on_score_earned)
 	ammo_bar.visible = false
 	grenade_counter_label.visible = false
+
+	GameData.reset() # reset the score at game start (important for Play Again)
+	score_label.text = "0"
 
 func _on_game_won() -> void:
 	print("YOU WIN!")
@@ -119,4 +127,17 @@ func _on_player_respawn_needed() -> void:
 	player.input_enabled = true
 	await get_tree().create_timer(1.0).timeout
 	player.end_invincibility()
+
+func _on_score_earned(points: int) -> void:
+	GameData.score += points
+	if _score_tween:
+		_score_tween.kill()
+	_score_tween = create_tween()
+	_score_tween.tween_method(
+		func(val: float): score_label.text = str(int(val)),
+		_displayed_score,
+		float(GameData.score),
+		SCORE_ROLL_SPEED
+	)
+	_score_tween.tween_callback(func(): _displayed_score = float(GameData.score))
 # FUNTIONS END HERE ***************************************

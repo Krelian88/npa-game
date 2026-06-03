@@ -2,6 +2,7 @@ extends Area2D
 
 # VARIABLES START HERE: **************************
 @export var speed = 2000
+@export var damage := 1
 var hit := false
 # VARIABLES END ***********************************
 
@@ -24,6 +25,6 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	if body.is_in_group("Enemies"):
 		hit = true	
-		body.take_damage()
+		body.take_damage(damage)
 		queue_free()
 # FUNCTIONS END ************************************

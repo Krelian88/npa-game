@@ -136,23 +136,24 @@ func _start_blink() -> void:
 func shoot() -> void:
 	match weapon_mode:
 		WeaponMode.NORMAL:
-			_fire_bullet(0.0)
+			_fire_bullet(0.0)	# 1 damage (default)
 			shoot_sound.pitch_scale = randi_range(1, 2)
 			shoot_sound.play()
 		WeaponMode.TRIPLE:
-			_fire_bullet(-15.0)
-			_fire_bullet(0.0)
-			_fire_bullet(15.0)
+			_fire_bullet(-15.0, 2)	# ← change 2 to whatever
+			_fire_bullet(0.0, 2)
+			_fire_bullet(15.0, 2)
 			_use_special_ammo()
 			triple_shot_sound.play()
 		WeaponMode.RAPID:
-			_fire_bullet(0.0)
+			_fire_bullet(0.0, 3)	# ← change 1 to whatever
 			_use_special_ammo()
 			if not rapid_shot_sound.playing:
 				rapid_shot_sound.play()
 
-func _fire_bullet(angle_offset_deg: float) -> void:
+func _fire_bullet(angle_offset_deg: float, damage: int = 1) -> void:
 	var new_bullet = bullet.instantiate()
+	new_bullet.damage = damage
 	get_parent().add_child(new_bullet)
 	new_bullet.global_position = $Gun/Muzzle.global_position
 	new_bullet.global_rotation = $Gun.global_rotation + deg_to_rad(angle_offset_deg)

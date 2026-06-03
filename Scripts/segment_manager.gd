@@ -1,12 +1,13 @@
 class_name SegmentManager
-	
+
 extends Node
-	
+
 # SIGNALS START HERE: **********************************************
 signal segment_cleared(segment_index)
 signal all_segments_cleared
+signal score_earned(points: int)
 #SIGNALS END ******************************************
-	
+
 #CONSTANTS START HERE: ***************************************************
 const SEGMENT_COUNT := 4
 const LEVEL_HEIGHT := 3000
@@ -28,7 +29,7 @@ const SPAWN_MARGIN := 60
 # Example: [0, 0, 1] means 67% chance of type 1, 33% chance of type 2.
 # To adjust difficulty, add or remove entries — only the ratio matters, not the total count.
 const SEGMENT_ENEMY_POOLS := [
-	[0, 0, 0, 0, 0],        # Segment 0: type 1 only
+	[0, 0, 0, 0, 0, 1],        # Segment 0: mostly type 1 only and rarely type 2
 	[0, 0, 0, 1, 1, 2],     # Segment 1: type 1 dominant, type 2 present, type 3 rare
 	[0, 0, 1, 1, 2, 2],     # Segment 2: all three types equally
 	[0, 1, 2],              # Segment 3 (boss minions): all three types equally
@@ -73,7 +74,7 @@ const SPAWN_ENTRIES := [
 	],
 ]
 #CONSTANTS END **************************************************
-	
+
 #VARIABLES START HERE: ****************************************************
 var current_segment := 0
 var enemies_to_spawn := 0
@@ -98,12 +99,12 @@ var move_indicator_right : AnimatedSprite2D = null
 var indicator_sfx : AudioStreamPlayer = null
 var _completion_pending := false
 #VARIABLES END ****************************************************
-	
+
 #FUNCTIONS START HERE: ****************************************************
 func _ready() -> void:
 	player = get_parent().get_node("Player")
 	draw_debug_boundaries.call_deferred()
-	
+
 func start_segment() -> void:
 	_completion_pending = false
 	enemies_alive = 0
@@ -114,7 +115,7 @@ func start_segment() -> void:
 		_start_boss_sequence()
 	else:
 		spawn_enemies()
-	
+
 func _start_boss_sequence() -> void:
 	print("[SegmentManager] Boss sequence started — fading BGM...")
 	# Fade out main BGM over 3.5 seconds
@@ -132,7 +133,7 @@ func _start_boss_sequence() -> void:
 	# Wait 4.5 seconds, then spawn boss
 	await get_tree().create_timer(4.5).timeout
 	spawn_boss()
-	
+
 func spawn_boss() -> void:
 	print("[SegmentManager] BOSS FIGHT!")
 	boss_alive = true
@@ -149,13 +150,14 @@ func spawn_boss() -> void:
 		if is_instance_valid(new_boss):
 			new_boss.is_entering = false
 	)
-	
+
 func _on_boss_died() -> void:
 	print("[SegmentManager] Boss defeated!")
 	boss_alive = false
+	score_earned.emit(5000)
 	if enemies_alive <= 0:
 		_on_segment_complete.call_deferred()
-	
+
 func spawn_enemies() -> void:
 	if spawn_timer:
 		spawn_timer.queue_free()
@@ -167,7 +169,7 @@ func spawn_enemies() -> void:
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	add_child(spawn_timer)
 	spawn_timer.start()
-	
+
 func _on_spawn_timer_timeout() -> void:
 	if enemies_to_spawn <= 0:
 		spawn_timer.queue_free()
@@ -199,14 +201,15 @@ func _on_spawn_timer_timeout() -> void:
 		enemies_alive += 1
 		enemies_to_spawn -= 1
 	spawn_timer.wait_time = randf_range(0.5, 1.5) # this changes the time between waves of attacks, less is faster
-	
-func on_enemy_died() -> void:
+
+func on_enemy_died(points: int) -> void:
 	enemies_alive = max(0, enemies_alive - 1)
+	score_earned.emit(points)
 	print("[SegmentManager] Enemies remaining: %d, to spawn: %d" % [enemies_alive, enemies_to_spawn])
 	if enemies_alive <= 0 and enemies_to_spawn <= 0 and not boss_alive and not waiting_for_player and not _completion_pending:
 		_completion_pending = true
 		_on_segment_complete.call_deferred()
-	
+
 func _on_segment_complete() -> void:
 	_completion_pending = false
 	if current_segment >= SEGMENT_COUNT:
@@ -223,14 +226,14 @@ func _on_segment_complete() -> void:
 		waiting_for_player = true
 	else:
 		advance_to_next_segment()
-	
+
 func _process(_delta: float) -> void:
 	if waiting_for_player and player:
 		if player.global_position.y < SEGMENTS[current_segment]["y_min"] - 50:
 			waiting_for_player = false
 			_hide_indicator()
 			advance_to_next_segment()
-	
+
 func _show_indicator() -> void:
 	if _indicator_tween:
 		_indicator_tween.kill()
@@ -254,7 +257,7 @@ func _show_indicator() -> void:
 		if indicator_sfx:
 			indicator_sfx.play()          # beep on every blink
 	)
-	
+
 func _hide_indicator() -> void:
 	if _indicator_tween:
 		_indicator_tween.kill()
@@ -262,7 +265,7 @@ func _hide_indicator() -> void:
 	for ind in [move_indicator_left, move_indicator_right]:
 		if ind:
 			ind.visible = false
-	
+
 func advance_to_next_segment() -> void:
 		if spawn_timer:
 			spawn_timer.queue_free()
@@ -272,7 +275,7 @@ func advance_to_next_segment() -> void:
 			all_segments_cleared.emit()
 		else:
 			start_segment()
-	
+
 # ********** THIS FUNCTION IS NO LONGER NEEDED BUT KEPT COMMENT OUT AS REFERENCE ************
 #func transition_to_next_segment() -> void:
 #	var seg: Dictionary = SEGMENTS[current_segment]
@@ -288,7 +291,7 @@ func advance_to_next_segment() -> void:
 #		if not player.attract_mode:
 #			player.input_enabled = true
 #	)
-	
+
 func create_wall(y_pos: float, one_way: bool = false) -> StaticBody2D:
 	var wall := StaticBody2D.new()
 	var shape := CollisionShape2D.new()
@@ -301,22 +304,22 @@ func create_wall(y_pos: float, one_way: bool = false) -> StaticBody2D:
 	wall.position = Vector2(0, y_pos)
 	get_parent().add_child(wall)
 	return wall
-	
+
 func place_top_wall() -> void:
 	if wall_top:
 		wall_top.queue_free()
 	wall_top = create_wall(SEGMENTS[current_segment]["y_min"])
-	
+
 func place_bottom_wall() -> void:
 	if wall_bottom:
 		wall_bottom.queue_free()
 	wall_bottom = create_wall(SEGMENTS[current_segment]["y_min"], true)
-	
+
 func remove_top_wall() -> void:
 	if wall_top:
 		wall_top.queue_free()
 		wall_top = null
-	
+
 func draw_debug_boundaries() -> void:
 	var colors := [
 		Color(1, 0, 0, 0.15),

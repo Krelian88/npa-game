@@ -3,7 +3,13 @@
 [ext_resource type="Script" uid="uid://dtwsa57d8kfyo" path="res://Scripts/win_screen.gd" id="1_qqrgm"]
 [ext_resource type="Theme" uid="uid://dnc6jb2ooa6pj" path="res://Tres/button_state.tres" id="1_y0a1q"]
 [ext_resource type="AudioStream" uid="uid://nyvwhi24n10h" path="res://Assets/SoundFX/hover_sound.wav" id="2_qqrgm"]
+[ext_resource type="FontFile" uid="uid://cnj14jk4lv112" path="res://Assets/Fonts/BITCOUNTGRIDSINGLE-MEDIUM.TTF" id="3_hmhjm"]
 [ext_resource type="AudioStream" uid="uid://cnlco3qk3b5lt" path="res://Assets/SoundFX/select_sound.wav" id="3_otsph"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bywjl"]
+font = ExtResource("3_hmhjm")
+font_size = 24
+font_color = Color(1, 0.77970624, 0.39732322, 1)
 
 [node name="win_screen" type="Control" unique_id=907777748]
 layout_mode = 3
@@ -57,6 +63,15 @@ text = "PLAY AGAIN"
 layout_mode = 2
 size_flags_horizontal = 4
 text = "QUIT TO MENU"
+
+[node name="score_label" type="Label" parent="." unique_id=570813781]
+layout_mode = 0
+offset_left = 517.0
+offset_top = 479.0
+offset_right = 557.0
+offset_bottom = 502.0
+label_settings = SubResource("LabelSettings_bywjl")
+horizontal_alignment = 2
 
 [node name="hover_sound" type="AudioStreamPlayer" parent="." unique_id=622623573]
 process_mode = 3

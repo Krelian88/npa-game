@@ -4,6 +4,12 @@
 [ext_resource type="Theme" uid="uid://dnc6jb2ooa6pj" path="res://Tres/button_state.tres" id="1_mjsgh"]
 [ext_resource type="Script" uid="uid://dn4o5qfdhx5su" path="res://Scripts/game_over.gd" id="1_xnpu1"]
 [ext_resource type="AudioStream" uid="uid://cnlco3qk3b5lt" path="res://Assets/SoundFX/select_sound.wav" id="2_mjsgh"]
+[ext_resource type="FontFile" uid="uid://cnj14jk4lv112" path="res://Assets/Fonts/BITCOUNTGRIDSINGLE-MEDIUM.TTF" id="3_3p3j6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_t757r"]
+font = ExtResource("3_3p3j6")
+font_size = 24
+font_color = Color(1, 0.68215865, 0.4288597, 1)
 
 [node name="game_over" type="Control" unique_id=1237557469]
 layout_mode = 3
@@ -54,6 +60,15 @@ text = "RETRY"
 layout_mode = 2
 size_flags_horizontal = 4
 text = "QUIT TO MENU"
+
+[node name="score_label" type="Label" parent="." unique_id=13941942]
+layout_mode = 0
+offset_left = 523.0
+offset_top = 297.0
+offset_right = 563.0
+offset_bottom = 327.0
+label_settings = SubResource("LabelSettings_t757r")
+horizontal_alignment = 2
 
 [node name="hover_sound" type="AudioStreamPlayer" parent="." unique_id=241505498]
 process_mode = 3

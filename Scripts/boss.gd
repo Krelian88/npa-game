@@ -19,7 +19,7 @@ const PATROL_BOUNDARY_BOTTOM := 350.0
 # VARIABLES START HERE: ***************************************
 # STATS
 @export_group("Stats")
-@export var MAX_HEALTH : int = 50
+@export var MAX_HEALTH : int = 300
 	
 @export_group("Movement")
 @export var SPEED_PHASE_1 : float = 100.0

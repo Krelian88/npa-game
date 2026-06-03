@@ -1,5 +1,5 @@
 extends Node2D
-	
+
 # ONREADY VAR START HERE: ******************************************
 @onready var bgm = $bgm
 @onready var boss_bgm = $boss_bgm
@@ -11,17 +11,18 @@ extends Node2D
 @onready var grenade_counter_label = $CanvasLayer/grenade_counter
 @onready var player = $Player
 # ONREADY VAR ENDS *********************************************
-	
+
 # VARIABLES START HERE: *************************************************
 var coin = preload("res://Scene/coin.tscn")
 var target = preload("res://Scene/target.tscn")
 var pause_menu = preload("res://Scene/pause_menu.tscn")
+var _hp_tween : Tween
 # VARIABLES ENDS *******************************************************
-	
+
 # CONSTANTS START HERE: ********************************************
 const SPAWN_MARGIN:= 60    #keep enemies away from the very edge
 # CONSTANTS END ***********************************************
-	
+
 # FUNCTIONS START HERE: *********************************************
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -58,33 +59,41 @@ func _ready() -> void:
 	player.ammo_changed.connect(_on_ammo_changed)
 	player.weapon_mode_changed.connect(_on_weapon_mode_changed)
 	player.grenade_count_changed.connect(_on_grenade_count_changed)
+	player.health_changed.connect(_on_health_changed)
 	ammo_bar.visible = false
 	grenade_counter_label.visible = false
-	
+
 func _on_game_won() -> void:
 	print("YOU WIN!")
 	get_tree().change_scene_to_file("res://Scene/win_screen.tscn")
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if not is_instance_valid(player):
 		return
-	$CanvasLayer/ProgressBar.value = player.player_health
 	if Input.is_action_just_pressed("ui_cancel") and not get_tree().paused and not player.attract_mode:
 		get_tree().paused = true
 		bgm.volume_db = -20.0
 		var menu = pause_menu.instantiate()
 		menu.bgm = bgm
 		add_child(menu)
-	
+
 func _on_ammo_changed(current: int, max_val: int) -> void:
 	ammo_bar.max_value = max_val
 	ammo_bar.value = current
-	
+
 func _on_weapon_mode_changed(mode: int) -> void:
 	ammo_bar.visible = mode != 0
-	
+
 func _on_grenade_count_changed(count: int) -> void:
 	grenade_counter_label.visible = count > 0
 	grenade_counter_label.text = "GRENADES: %d" % count
+
+func _on_health_changed(new_health: int) -> void:
+	if _hp_tween:
+		_hp_tween.kill()
+	_hp_tween = create_tween()
+	_hp_tween.set_ease(Tween.EASE_OUT)
+	_hp_tween.set_trans(Tween.TRANS_QUAD)
+	_hp_tween.tween_property($CanvasLayer/hp_bar, "value", float(new_health), 0.3)
 # FUNTIONS END HERE ***************************************

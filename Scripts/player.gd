@@ -34,6 +34,7 @@ signal attract_game_over
 signal ammo_changed(current_ammo: int, max_ammo: int)
 signal weapon_mode_changed(mode: int)
 signal grenade_count_changed(count: int)
+signal health_changed(new_health: int)
 # SIGNALS END ****************************************************
 
 #CONSTANTS STATRS HERE: *************************************************
@@ -98,6 +99,7 @@ func take_damage(amount: int) -> void:
 	if is_invincible:
 		return
 	player_health -= amount
+	health_changed.emit(player_health)
 	print("Player Health: ", player_health)
 	is_invincible = true
 	_start_blink()
@@ -166,6 +168,7 @@ func take_powerup(type: Powerup.Type) -> void:
 			special_ammo_sound.play()
 		Powerup.Type.HP_FILL:
 			player_health = min(100, player_health + hp_restore_percent)
+			health_changed.emit(player_health)
 			hp_powerup_sound.play()
 		Powerup.Type.GRENADE:
 			grenade_count += grenades_per_pickup

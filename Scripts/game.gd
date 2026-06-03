@@ -8,7 +8,8 @@ extends Node2D
 @onready var move_indicator_left = $CanvasLayer/move_indicator_left
 @onready var move_indicator_right = $CanvasLayer/move_indicator_right
 @onready var ammo_bar = $CanvasLayer/ammo_bar
-@onready var grenade_counter_label = $CanvasLayer/grenade_counter
+@onready var grenade_icon = $CanvasLayer/grenade_icon
+@onready var grenade_count_label = $CanvasLayer/grenade_count_label
 @onready var player = $Player
 @onready var life_1 = $CanvasLayer/life_1
 @onready var life_2 = $CanvasLayer/life_2
@@ -70,7 +71,8 @@ func _ready() -> void:
 	player.player_respawn_needed.connect(_on_player_respawn_needed)
 	segment_manager.score_earned.connect(_on_score_earned)
 	ammo_bar.visible = false
-	grenade_counter_label.visible = false
+	grenade_icon.visible = false
+	grenade_count_label.visible = false
 
 	GameData.reset() # reset the score at game start (important for Play Again)
 	score_label.text = "0"
@@ -98,8 +100,9 @@ func _on_weapon_mode_changed(mode: int) -> void:
 	ammo_bar.visible = mode != 0
 
 func _on_grenade_count_changed(count: int) -> void:
-	grenade_counter_label.visible = count > 0
-	grenade_counter_label.text = "GRENADES: %d" % count
+	grenade_icon.visible = count > 0
+	grenade_count_label.visible = count > 0
+	grenade_count_label.text = "x%d" % count
 
 func _on_health_changed(new_health: int) -> void:
 	if _hp_tween:

@@ -226,4 +226,7 @@ func end_invincibility() -> void:
 		_blink_tween = null
 	is_invincible = false
 	visible = true
+
+func set_camera_bottom_limit(y: float) -> void:
+	camera.limit_bottom = int(y)
 #FUNCTIONS END HERE **************************************************

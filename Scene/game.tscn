@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://b40evle3s01g7" path="res://Scripts/segment_manager.gd" id="7_h8jt7"]
 [ext_resource type="AudioStream" uid="uid://cstesuymirlut" path="res://Assets/SoundFX/indicator.wav" id="7_sagxc"]
 [ext_resource type="Texture2D" uid="uid://cfxk7wr2p3qvu" path="res://Assets/Art/UI/lives_icon.png" id="9_ha7wd"]
+[ext_resource type="Texture2D" uid="uid://bv5djrdktdgf1" path="res://Assets/Art/Power_Ups/pwr_up_grenade.png" id="9_vyw1f"]
 [ext_resource type="FontFile" uid="uid://cnj14jk4lv112" path="res://Assets/Fonts/BITCOUNTGRIDSINGLE-MEDIUM.TTF" id="10_yjs1f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h8jt7"]
@@ -29,6 +30,11 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="LabelSettings" id="LabelSettings_cvvdq"]
+font = ExtResource("10_yjs1f")
+font_size = 24
+font_color = Color(1, 0.68215865, 0.48452926, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_vyw1f"]
 font = ExtResource("10_yjs1f")
@@ -89,12 +95,21 @@ value = 10.0
 texture_under = ExtResource("4_8f6ah")
 texture_progress = ExtResource("5_twwsd")
 
-[node name="grenade_counter" type="Label" parent="CanvasLayer" unique_id=696173205]
-visible = false
-offset_left = 543.0
+[node name="grenade_icon" type="TextureRect" parent="CanvasLayer" unique_id=1668231672]
+offset_left = 487.0
+offset_top = 653.0
+offset_right = 530.0
+offset_bottom = 696.0
+texture = ExtResource("9_vyw1f")
+
+[node name="grenade_count_label" type="Label" parent="CanvasLayer" unique_id=909063327]
+offset_left = 525.0
 offset_top = 660.0
-offset_right = 583.0
-offset_bottom = 683.0
+offset_right = 586.0
+offset_bottom = 702.0
+text = "X 0"
+label_settings = SubResource("LabelSettings_cvvdq")
+horizontal_alignment = 2
 
 [node name="life_1" type="TextureRect" parent="CanvasLayer" unique_id=244808459]
 offset_left = 194.0

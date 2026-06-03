@@ -233,6 +233,12 @@ func _process(_delta: float) -> void:
 			waiting_for_player = false
 			_hide_indicator()
 			advance_to_next_segment()
+	# Smoothly lock camera bottom once the wall has naturally left the bottom of the screen
+	if player and wall_bottom:
+		var boundary_y : float = wall_bottom.position.y
+		var viewport_half : float = get_viewport().get_visible_rect().size.y / 2.0
+		if player.global_position.y < boundary_y - viewport_half:
+			player.set_camera_bottom_limit(boundary_y)
 
 func _show_indicator() -> void:
 	if _indicator_tween:

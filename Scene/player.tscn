@@ -5,6 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://dkbnocxyngpqx" path="res://Assets/Art/Player/main_character_idle_spritesheet.png" id="2_ivevv"]
 [ext_resource type="Script" uid="uid://b44uwst488urn" path="res://Scripts/gun.gd" id="3_ivevv"]
 [ext_resource type="AudioStream" uid="uid://b8k8ao7ofu5s" path="res://Assets/SoundFX/laser_shot.mp3" id="5_ivevv"]
+[ext_resource type="AudioStream" uid="uid://bgh6dm48usjhp" path="res://Assets/SoundFX/triple_shot.mp3" id="6_c31lq"]
+[ext_resource type="AudioStream" uid="uid://dpuhw0qudjhex" path="res://Assets/SoundFX/rapid_shot.wav" id="7_2dof7"]
+[ext_resource type="AudioStream" uid="uid://dj26yoe26two4" path="res://Assets/SoundFX/grenade_throw.mp3" id="8_4ao7i"]
+[ext_resource type="AudioStream" uid="uid://dlmx1yimcq28r" path="res://Assets/SoundFX/hp_powerup.mp3" id="9_1sypm"]
+[ext_resource type="AudioStream" uid="uid://brvtyr78omhwt" path="res://Assets/SoundFX/special_ammo_pickup.mp3" id="10_fn0wv"]
+[ext_resource type="AudioStream" uid="uid://bwr0be7bh7tgp" path="res://Assets/SoundFX/grenade_pickup.mp3" id="11_eqmt2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_58ae2"]
 size = Vector2(33, 42)
@@ -253,10 +259,6 @@ shape = SubResource("CapsuleShape2D_58ae2")
 [node name="InvincibilityTimer" type="Timer" parent="." unique_id=1336789900]
 one_shot = true
 
-[node name="gun_shot" type="AudioStreamPlayer" parent="." unique_id=1812492906]
-stream = ExtResource("5_ivevv")
-bus = &"SFX"
-
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=1923161781]
 tree_root = SubResource("AnimationNodeStateMachine_ivevv")
 anim_player = NodePath("../AnimationPlayer")
@@ -269,6 +271,37 @@ parameters/Idle/blend_position = Vector2(-0.0024330616, 0.98734176)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1223232107]
 deterministic = true
 libraries/ = SubResource("AnimationLibrary_p6qlh")
+
+[node name="gun_shot" type="AudioStreamPlayer" parent="." unique_id=1812492906]
+stream = ExtResource("5_ivevv")
+bus = &"SFX"
+
+[node name="triple_shot_sound" type="AudioStreamPlayer" parent="." unique_id=177747418]
+stream = ExtResource("6_c31lq")
+bus = &"SFX"
+
+[node name="rapid_shot_sound" type="AudioStreamPlayer" parent="." unique_id=978891155]
+stream = ExtResource("7_2dof7")
+bus = &"SFX"
+
+[node name="grenade_throw_sound" type="AudioStreamPlayer" parent="." unique_id=1522100941]
+stream = ExtResource("8_4ao7i")
+volume_db = 4.0
+bus = &"SFX"
+
+[node name="hp_powerup_sound" type="AudioStreamPlayer" parent="." unique_id=80512641]
+stream = ExtResource("9_1sypm")
+bus = &"SFX"
+
+[node name="special_ammo_sound" type="AudioStreamPlayer" parent="." unique_id=1526133272]
+stream = ExtResource("10_fn0wv")
+volume_db = 4.0
+bus = &"SFX"
+
+[node name="grenade_pickup_sound" type="AudioStreamPlayer" parent="." unique_id=1289796407]
+stream = ExtResource("11_eqmt2")
+volume_db = 4.0
+bus = &"SFX"
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]

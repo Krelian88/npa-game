@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dcql3j18gajbk"]
 
 [ext_resource type="Script" uid="uid://cm5fhgkre86xj" path="res://Scripts/explosion.gd" id="1_w8ob6"]
+[ext_resource type="AudioStream" uid="uid://cy17khf2e3swm" path="res://Assets/SoundFX/grenade_explosion.mp3" id="2_mko8c"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mko8c"]
 radius = 100.0
@@ -12,3 +13,7 @@ script = ExtResource("1_w8ob6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1339514981]
 shape = SubResource("CircleShape2D_mko8c")
+
+[node name="explosion_sound" type="AudioStreamPlayer" parent="." unique_id=636934352]
+stream = ExtResource("2_mko8c")
+bus = &"SFX"

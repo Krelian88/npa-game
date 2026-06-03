@@ -17,12 +17,16 @@ var _powerup_scenes := [
 ]
 var _pause_timer := -1.0  # -1 means not yet initialised
 var _is_paused := false
+var _is_dead := false
 # VARIABLES END *************************************
 	
 # FUNCTIONS START HERE: ****************************
 func take_damage(amount: int = 1) -> void:
+	if _is_dead:
+		return
 	enemy_health -= amount
 	if enemy_health <= 0:
+		_is_dead = true
 		_try_drop_powerup()
 		died.emit() # ← broadcasts the signal before disappearing
 		queue_free()

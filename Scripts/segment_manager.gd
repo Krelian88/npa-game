@@ -106,8 +106,9 @@ func _ready() -> void:
 	
 func start_segment() -> void:
 	_completion_pending = false
-	enemies_alive = SEGMENTS[current_segment]["enemies"]
-	print("[SegmentManager] Starting segment %d with %d enemies" % [current_segment+ 1, enemies_alive])
+	enemies_alive = 0
+	if not player.attract_mode:
+		print("[SegmentManager] Starting segment %d with %d enemies" % [current_segment + 1, SEGMENTS[current_segment]["enemies"]])
 	place_top_wall()
 	if current_segment == 3:
 		_start_boss_sequence()
@@ -156,6 +157,9 @@ func _on_boss_died() -> void:
 		_on_segment_complete.call_deferred()
 	
 func spawn_enemies() -> void:
+	if spawn_timer:
+		spawn_timer.queue_free()
+		spawn_timer = null
 	enemies_to_spawn = SEGMENTS[current_segment]["enemies"]
 	spawn_timer = Timer.new()
 	spawn_timer.wait_time = randf_range(1.0, 3.0)
@@ -192,6 +196,7 @@ func _on_spawn_timer_timeout() -> void:
 )
 		new_enemy.died.connect(on_enemy_died)
 		get_parent().add_child(new_enemy)
+		enemies_alive += 1
 		enemies_to_spawn -= 1
 	spawn_timer.wait_time = randf_range(0.5, 1.5) # this changes the time between waves of attacks, less is faster
 	

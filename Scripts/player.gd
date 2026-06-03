@@ -5,6 +5,12 @@ enum WeaponMode { NORMAL, TRIPLE, RAPID }
 # VARIABLES STARTS: *****************************************************
 @onready var shoot_sound = $gun_shot
 @onready var camera = $Camera2D
+@onready var triple_shot_sound = $triple_shot_sound
+@onready var rapid_shot_sound = $rapid_shot_sound
+@onready var grenade_throw_sound = $grenade_throw_sound
+@onready var hp_powerup_sound = $hp_powerup_sound
+@onready var special_ammo_sound = $special_ammo_sound
+@onready var grenade_pickup_sound = $grenade_pickup_sound
 var input_enabled = true
 var is_jumping = false
 var bullet = preload("res://Scene/bullet.tscn")
@@ -45,7 +51,7 @@ func _ready() -> void:
 	# Y: level is taller than the screen
 	camera.limit_top = 0					# top of the level
 	camera.limit_bottom = LEVEL_HEIGHT		# bottom of the level
-	
+
 # Called every frame. 'delta' is the elapsed time since
 func _process(_delta: float) -> void:
 	if player_health <= 0:
@@ -53,14 +59,14 @@ func _process(_delta: float) -> void:
 			attract_game_over.emit()
 		else:
 			get_tree().change_scene_to_file("res://Scene/game_over.tscn")
-	
+
 func _physics_process(delta: float) -> void:
 	if input_enabled:
 		var direction = Input.get_vector("Move Left", "Move Right", "Move Up", "Move Down")
 		velocity = speed * direction
 		if fire_timer > 0:
 			fire_timer -= delta
-
+		
 		if weapon_mode == WeaponMode.RAPID:
 			if Input.is_action_pressed("Fire") and fire_timer <= 0:
 				shoot()
@@ -68,7 +74,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			if Input.is_action_just_pressed("Fire"):
 				shoot()
-
+		
 		if Input.is_action_just_pressed("Throw Grenade") and grenade_count > 0:
 			_throw_grenade()
 		if get_global_mouse_position() < global_position:
@@ -83,11 +89,11 @@ func _physics_process(delta: float) -> void:
 	if is_jumping == false:
 		$JumpTimer.start()
 		is_jumping = true
-	
+
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Enemies") and is_invincible == false:
 		take_damage(10)
-	
+
 func take_damage(amount: int) -> void:
 	if is_invincible:
 		return
@@ -96,12 +102,12 @@ func take_damage(amount: int) -> void:
 	is_invincible = true
 	_start_blink()
 	$InvincibilityTimer.start()
-	
+
 func _on_invincibility_timer_timeout() -> void:
 	pass
 	is_invincible	= false
 	modulate = Color.WHITE #Changes colour back to normal!
-	
+
 func _start_blink() -> void:
 	var tween := create_tween()
 	tween.set_loops(12)
@@ -112,21 +118,24 @@ func _start_blink() -> void:
 	await tween.finished
 	is_invincible = false
 	visible = true
-	
+
 func shoot() -> void:
 	match weapon_mode:
 		WeaponMode.NORMAL:
 			_fire_bullet(0.0)
+			shoot_sound.pitch_scale = randi_range(1, 2)
+			shoot_sound.play()
 		WeaponMode.TRIPLE:
 			_fire_bullet(-15.0)
 			_fire_bullet(0.0)
 			_fire_bullet(15.0)
 			_use_special_ammo()
+			triple_shot_sound.play()
 		WeaponMode.RAPID:
 			_fire_bullet(0.0)
 			_use_special_ammo()
-	shoot_sound.pitch_scale = randi_range(1, 2)
-	shoot_sound.play()
+			if not rapid_shot_sound.playing:
+				rapid_shot_sound.play()
 
 func _fire_bullet(angle_offset_deg: float) -> void:
 	var new_bullet = bullet.instantiate()
@@ -148,16 +157,20 @@ func take_powerup(type: Powerup.Type) -> void:
 			special_ammo = max_special_ammo
 			ammo_changed.emit(special_ammo, max_special_ammo)
 			weapon_mode_changed.emit(WeaponMode.TRIPLE)
+			special_ammo_sound.play()
 		Powerup.Type.RAPID_SHOT:
 			weapon_mode = WeaponMode.RAPID
 			special_ammo = max_special_ammo
 			ammo_changed.emit(special_ammo, max_special_ammo)
 			weapon_mode_changed.emit(WeaponMode.RAPID)
+			special_ammo_sound.play()
 		Powerup.Type.HP_FILL:
 			player_health = min(100, player_health + hp_restore_percent)
+			hp_powerup_sound.play()
 		Powerup.Type.GRENADE:
 			grenade_count += grenades_per_pickup
 			grenade_count_changed.emit(grenade_count)
+			grenade_pickup_sound.play()
 
 func _throw_grenade() -> void:
 	var g = grenade_scene.instantiate()
@@ -166,10 +179,11 @@ func _throw_grenade() -> void:
 	g.direction = global_position.direction_to(get_global_mouse_position())
 	grenade_count -= 1
 	grenade_count_changed.emit(grenade_count)
-	
+	grenade_throw_sound.play()
+
 func _on_jump_timer_timeout() -> void:
 	$AnimationPlayer.play("jump")
-	
+
 func _on_animation_player_animation_finished(_anim_name: StringName) -> void:
 	is_jumping = false
 #FUNCTIONS END HERE **************************************************

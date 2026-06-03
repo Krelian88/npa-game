@@ -6,6 +6,7 @@ extends Area2D
 
 # FUNCTIONS START HERE: ************************************
 func _ready() -> void:
+	$explosion_sound.play()
 	var tween := create_tween()
 	tween.tween_property(self, "modulate", Color(1, 0.5, 0, 0.8), 0.1)
 	tween.tween_property(self, "modulate", Color.WHITE, 0.1)
@@ -13,6 +14,6 @@ func _ready() -> void:
 	for body in get_overlapping_bodies():
 		if body.is_in_group("Enemies"):
 			body.take_damage(damage)
-	await get_tree().process_frame
+	await $explosion_sound.finished
 	queue_free()
 # FUNCTIONS END ******************************************

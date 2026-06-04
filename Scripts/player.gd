@@ -229,4 +229,7 @@ func end_invincibility() -> void:
 
 func set_camera_bottom_limit(y: float) -> void:
 	camera.limit_bottom = int(y)
+
+func set_camera_top_limit(y: float) -> void:
+	camera.limit_top = int(y)
 #FUNCTIONS END HERE **************************************************

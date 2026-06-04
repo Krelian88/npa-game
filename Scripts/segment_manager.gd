@@ -103,7 +103,7 @@ var _completion_pending := false
 #FUNCTIONS START HERE: ****************************************************
 func _ready() -> void:
 	player = get_parent().get_node("Player")
-	draw_debug_boundaries.call_deferred()
+	# draw_debug_boundaries.call_deferred()  This call the function to draw provisional colours to differentiate the segments, no need for them once I have sprites background
 
 func start_segment() -> void:
 	_completion_pending = false
@@ -111,6 +111,8 @@ func start_segment() -> void:
 	if not player.attract_mode:
 		print("[SegmentManager] Starting segment %d with %d enemies" % [current_segment + 1, SEGMENTS[current_segment]["enemies"]])
 	place_top_wall()
+	if player:
+		player.set_camera_top_limit(SEGMENTS[current_segment]["y_min"])
 	if current_segment == 3:
 		_start_boss_sequence()
 	else:
@@ -215,11 +217,13 @@ func _on_segment_complete() -> void:
 	if current_segment >= SEGMENT_COUNT:
 		return
 	if waiting_for_player:
-		return
+		return	
 	print("[DEBUG] Segment complete triggered: enemies_alive=%d, enemies_to_spawn=%d" % [enemies_alive, enemies_to_spawn])
 	segment_cleared.emit(current_segment)
 	print("[SegmentManager] Segment %d cleared!" % (current_segment + 1))
 	remove_top_wall()
+	if player:
+		player.set_camera_top_limit(0)
 	if current_segment < SEGMENT_COUNT - 1:
 		place_bottom_wall()
 		_show_indicator()
@@ -326,7 +330,7 @@ func remove_top_wall() -> void:
 		wall_top.queue_free()
 		wall_top = null
 
-func draw_debug_boundaries() -> void:
+func draw_debug_boundaries() -> void: #colours to differentiate the segments, no need for them once I have sprites background
 	var colors := [
 		Color(1, 0, 0, 0.15),
 		Color(0, 1, 0, 0.15),

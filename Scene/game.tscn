@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cdx6n1bxa4cuc"]
+[gd_scene format=4 uid="uid://cdx6n1bxa4cuc"]
 
 [ext_resource type="PackedScene" uid="uid://cpdff5rgptw87" path="res://Scene/player.tscn" id="1_mhtsl"]
 [ext_resource type="Script" uid="uid://cnc5ay6amdguv" path="res://Scripts/game.gd" id="1_w51g1"]
@@ -15,6 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://cfxk7wr2p3qvu" path="res://Assets/Art/UI/lives_icon.png" id="9_ha7wd"]
 [ext_resource type="Texture2D" uid="uid://bv5djrdktdgf1" path="res://Assets/Art/Power_Ups/pwr_up_grenade.png" id="9_vyw1f"]
 [ext_resource type="FontFile" uid="uid://cnj14jk4lv112" path="res://Assets/Fonts/BITCOUNTGRIDSINGLE-MEDIUM.TTF" id="10_yjs1f"]
+[ext_resource type="Texture2D" uid="uid://bqwpfqm3g7op8" path="res://Assets/Art/Background/bg_lower.png" id="16_m52p7"]
+[ext_resource type="Texture2D" uid="uid://c2f7vs7s6yqha" path="res://Assets/Art/Background/bg_upper.png" id="17_vy0et"]
+[ext_resource type="Texture2D" uid="uid://2urnismkvvfu" path="res://Assets/Art/Background/segment_border.png" id="18_vy0et"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h8jt7"]
 atlas = ExtResource("3_h8jt7")
@@ -52,6 +55,32 @@ size = Vector2(1080, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8f6ah"]
 size = Vector2(1080, 20)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sqb0o"]
+texture = ExtResource("18_vy0et")
+texture_region_size = Vector2i(54, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+16:0/0 = 0
+17:0/0 = 0
+18:0/0 = 0
+19:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_gji41"]
+tile_size = Vector2i(54, 32)
+sources/0 = SubResource("TileSetAtlasSource_sqb0o")
 
 [node name="Game" type="Node2D" unique_id=431416297]
 script = ExtResource("1_w51g1")
@@ -176,3 +205,18 @@ bus = &"BGM"
 [node name="indicator_sfx" type="AudioStreamPlayer" parent="." unique_id=1296970535]
 stream = ExtResource("7_sagxc")
 bus = &"SFX"
+
+[node name="bg_lower" type="Sprite2D" parent="." unique_id=1029851791]
+z_index = -2
+position = Vector2(540, 2250)
+texture = ExtResource("16_m52p7")
+
+[node name="bg_upper" type="Sprite2D" parent="." unique_id=1362425186]
+z_index = -2
+position = Vector2(540, 750)
+texture = ExtResource("17_vy0et")
+
+[node name="segment_borders" type="TileMapLayer" parent="." unique_id=1687249318]
+z_index = -1
+tile_map_data = PackedByteArray("AAAAAC4AAAAAAAAAAAABAC4AAAABAAAAAAACAC4AAAACAAAAAAADAC4AAAADAAAAAAAEAC4AAAAEAAAAAAAFAC4AAAAFAAAAAAAGAC4AAAAGAAAAAAAHAC4AAAAHAAAAAAAIAC4AAAAIAAAAAAALAC4AAAALAAAAAAAMAC4AAAAMAAAAAAANAC4AAAANAAAAAAAOAC4AAAAOAAAAAAAPAC4AAAAPAAAAAAAQAC4AAAAQAAAAAAARAC4AAAARAAAAAAASAC4AAAASAAAAAAATAC4AAAATAAAAAAAAAF0AAAAAAAAAAAABAF0AAAABAAAAAAACAF0AAAACAAAAAAADAF0AAAADAAAAAAAEAF0AAAAEAAAAAAAFAF0AAAAFAAAAAAAGAF0AAAAGAAAAAAAHAF0AAAAHAAAAAAAIAF0AAAAIAAAAAAALAF0AAAALAAAAAAAMAF0AAAAMAAAAAAANAF0AAAANAAAAAAAOAF0AAAAOAAAAAAAPAF0AAAAPAAAAAAAQAF0AAAAQAAAAAAARAF0AAAARAAAAAAASAF0AAAASAAAAAAATAF0AAAATAAAAAAAAAAAAAAAAAAAAAAABAAAAAAABAAAAAAACAAAAAAACAAAAAAADAAAAAAADAAAAAAAEAAAAAAAEAAAAAAAFAAAAAAAFAAAAAAAGAAAAAAAGAAAAAAANAAAAAAANAAAAAAAOAAAAAAAOAAAAAAAPAAAAAAAPAAAAAAAQAAAAAAAQAAAAAAARAAAAAAARAAAAAAASAAAAAAASAAAAAAATAAAAAAATAAAAAAAHAAAAAAAIAAAAAAAMAAAAAAALAAAAAAAAAEYAAAAAAAAAAAABAEYAAAABAAAAAAACAEYAAAACAAAAAAADAEYAAAADAAAAAAAEAEYAAAAEAAAAAAAFAEYAAAAFAAAAAAAGAEYAAAAGAAAAAAAHAEYAAAAHAAAAAAAIAEYAAAAIAAAAAAALAEYAAAALAAAAAAAMAEYAAAAMAAAAAAANAEYAAAANAAAAAAAOAEYAAAAOAAAAAAAPAEYAAAAPAAAAAAAQAEYAAAAQAAAAAAARAEYAAAARAAAAAAASAEYAAAASAAAAAAATAEYAAAATAAAAAAAAABcAAAAAAAAAAAABABcAAAABAAAAAAACABcAAAACAAAAAAADABcAAAADAAAAAAAEABcAAAAEAAAAAAAFABcAAAAFAAAAAAAGABcAAAAGAAAAAAAHABcAAAAHAAAAAAAIABcAAAAIAAAAAAALABcAAAALAAAAAAAMABcAAAAMAAAAAAANABcAAAANAAAAAAAOABcAAAAOAAAAAAAPABcAAAAPAAAAAAAQABcAAAAQAAAAAAARABcAAAARAAAAAAASABcAAAASAAAAAAATABcAAAATAAAAAAA=")
+tile_set = SubResource("TileSet_gji41")

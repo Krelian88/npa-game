@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c1b0cx45sqhxw" path="res://Assets/Art/Enemies/enemy_01.png" id="2_s685e"]
 [ext_resource type="AudioStream" uid="uid://dnbvcuhmd33ld" path="res://Assets/SoundFX/enemy_die.mp3" id="3_s685e"]
 [ext_resource type="Texture2D" uid="uid://ca10rn36fxttf" path="res://Assets/Art/Enemies/enemy_01_die.png" id="4_n6qjc"]
+[ext_resource type="Texture2D" uid="uid://csppdakd320b5" path="res://Assets/Art/Enemies/enemy_01_run.png" id="5_vmi60"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jekx"]
 size = Vector2(83, 99)
@@ -44,6 +45,56 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_5op34"]
+atlas = ExtResource("5_vmi60")
+region = Rect2(0, 0, 104, 113)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6llc"]
+atlas = ExtResource("5_vmi60")
+region = Rect2(104, 0, 104, 113)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_00taw"]
+atlas = ExtResource("5_vmi60")
+region = Rect2(208, 0, 104, 113)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lgux2"]
+atlas = ExtResource("5_vmi60")
+region = Rect2(0, 113, 104, 113)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3ffy"]
+atlas = ExtResource("5_vmi60")
+region = Rect2(104, 113, 104, 113)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5jr7y"]
+atlas = ExtResource("5_vmi60")
+region = Rect2(208, 113, 104, 113)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_myw4n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5op34")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6llc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_00taw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lgux2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3ffy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5jr7y")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 14.0
+}]
+
 [node name="enemy" type="CharacterBody2D" unique_id=1766807267 groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
@@ -66,3 +117,7 @@ sprite_frames = SubResource("SpriteFrames_5op34")
 animation = &"die"
 frame = 3
 frame_progress = 1.0
+
+[node name="walk_anim" type="AnimatedSprite2D" parent="." unique_id=1303145063]
+sprite_frames = SubResource("SpriteFrames_myw4n")
+animation = &"walk"

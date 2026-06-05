@@ -171,7 +171,7 @@ animations = [{
 
 [node name="Player" type="CharacterBody2D" unique_id=1179958325]
 script = ExtResource("1_y8w33")
-max_triple_ammo = 15
+max_triple_ammo = 25
 grenades_per_pickup = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1176318718]
@@ -248,7 +248,7 @@ bus = &"SFX"
 visible = false
 sprite_frames = SubResource("SpriteFrames_lgjog")
 animation = &"run_up"
-frame_progress = 0.71671903
+frame_progress = 0.74208516
 
 [node name="death_anim" type="AnimatedSprite2D" parent="." unique_id=864938410]
 visible = false

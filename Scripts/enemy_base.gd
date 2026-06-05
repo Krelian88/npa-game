@@ -21,6 +21,7 @@ var _is_dead := false
 var points: int = 0
 @onready var die_sound = $die_sound
 @onready var death_anim = $death_anim
+@onready var walk_anim = $walk_anim
 # VARIABLES END *************************************
 
 # FUNCTIONS START HERE: ****************************
@@ -34,6 +35,7 @@ func take_damage(amount: int = 1) -> void:
 		is_entering = true
 		$CollisionShape2D.set_deferred("disabled", true)
 		$Sprite2D.visible = false
+		walk_anim.visible = false
 		death_anim.visible = true
 		death_anim.play("die")
 		die_sound.pitch_scale = randf_range(0.8, 1.3)
@@ -51,6 +53,9 @@ func _try_drop_powerup() -> void:
 
 func _ready() -> void:
 	collision_mask = 0
+	$Sprite2D.visible = false
+	walk_anim.visible = true
+	walk_anim.play("walk")
 
 func _physics_process(delta: float) -> void:
 	if is_entering:

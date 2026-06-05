@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://t8jcbj6jx7oc" path="res://Assets/Art/Enemies/enemy_03.png" id="2_ola5l"]
 [ext_resource type="AudioStream" uid="uid://dnbvcuhmd33ld" path="res://Assets/SoundFX/enemy_die.mp3" id="3_ola5l"]
 [ext_resource type="Texture2D" uid="uid://ch7u6ajykgtsg" path="res://Assets/Art/Enemies/enemy_03_die.png" id="4_nk31w"]
+[ext_resource type="Texture2D" uid="uid://bfhxcaku0vrdg" path="res://Assets/Art/Enemies/enemy_03_run.png" id="5_sfipj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jekx"]
 size = Vector2(140, 126)
@@ -44,6 +45,42 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_asuxs"]
+atlas = ExtResource("5_sfipj")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4pj2w"]
+atlas = ExtResource("5_sfipj")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o4p2p"]
+atlas = ExtResource("5_sfipj")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6uyan"]
+atlas = ExtResource("5_sfipj")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h5ccb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_asuxs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4pj2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o4p2p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6uyan")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
 [node name="enemy3" type="CharacterBody2D" unique_id=1766807267 groups=["Enemies"]]
 collision_layer = 2
 collision_mask = 2
@@ -69,3 +106,9 @@ sprite_frames = SubResource("SpriteFrames_asuxs")
 animation = &"die"
 frame = 3
 frame_progress = 1.0
+
+[node name="walk_anim" type="AnimatedSprite2D" parent="." unique_id=637952579]
+scale = Vector2(1.21875, 1.21875)
+sprite_frames = SubResource("SpriteFrames_h5ccb")
+animation = &"walk"
+frame_progress = 0.88808125

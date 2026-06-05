@@ -2,6 +2,7 @@ extends EnemyBase
 
 # FUNCTIONS START HERE: ********************
 func _ready() -> void:
+	super._ready()
 	enemy_health = 5
 	speed = 70
 	points = 75

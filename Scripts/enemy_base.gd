@@ -20,6 +20,7 @@ var _is_paused := false
 var _is_dead := false
 var points: int = 0
 @onready var die_sound = $die_sound
+@onready var death_anim = $death_anim
 # VARIABLES END *************************************
 
 # FUNCTIONS START HERE: ****************************
@@ -30,10 +31,15 @@ func take_damage(amount: int = 1) -> void:
 	if enemy_health <= 0:
 		_is_dead = true
 		_try_drop_powerup()
+		is_entering = true
+		$CollisionShape2D.set_deferred("disabled", true)
+		$Sprite2D.visible = false
+		death_anim.visible = true
+		death_anim.play("die")
 		die_sound.pitch_scale = randf_range(0.8, 1.3)
 		die_sound.play()
 		died.emit(points) # ← broadcasts the signal before disappearing
-		await die_sound.finished
+		await death_anim.animation_finished
 		queue_free()
 
 func _try_drop_powerup() -> void:

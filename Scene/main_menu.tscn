@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cqhwxcpxhdfsl" path="res://Scripts/main_menu.gd" id="1_ftydy"]
 [ext_resource type="Theme" uid="uid://dnc6jb2ooa6pj" path="res://Tres/button_state.tres" id="1_pvidh"]
 [ext_resource type="AudioStream" uid="uid://hrph7g7t0lop" path="res://Assets/Music/bgm_menu_theme_PH.mp3" id="2_87ipw"]
+[ext_resource type="Texture2D" uid="uid://c2xv6qfd1fvl1" path="res://Assets/Art/UI/title_pheww.png" id="3_hptlk"]
 [ext_resource type="AudioStream" uid="uid://nyvwhi24n10h" path="res://Assets/SoundFX/hover_sound.wav" id="3_kqsxi"]
 [ext_resource type="AudioStream" uid="uid://cnlco3qk3b5lt" path="res://Assets/SoundFX/select_sound.wav" id="4_pvidh"]
 
@@ -45,10 +46,9 @@ layout_mode = 2
 theme = ExtResource("1_pvidh")
 theme_override_constants/separation = 40
 
-[node name="title_label" type="Label" parent="menu_ui/center/vbox" unique_id=1765395936]
+[node name="title_label" type="TextureRect" parent="menu_ui/center/vbox" unique_id=2073805278]
 layout_mode = 2
-text = "PHEWW!"
-horizontal_alignment = 1
+texture = ExtResource("3_hptlk")
 
 [node name="play_button" type="Button" parent="menu_ui/center/vbox" unique_id=1754253628]
 layout_mode = 2

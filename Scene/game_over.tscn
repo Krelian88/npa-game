@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://dn4o5qfdhx5su" path="res://Scripts/game_over.gd" id="1_xnpu1"]
 [ext_resource type="AudioStream" uid="uid://cnlco3qk3b5lt" path="res://Assets/SoundFX/select_sound.wav" id="2_mjsgh"]
 [ext_resource type="FontFile" uid="uid://cnj14jk4lv112" path="res://Assets/Fonts/BITCOUNTGRIDSINGLE-MEDIUM.TTF" id="3_3p3j6"]
+[ext_resource type="Texture2D" uid="uid://dd8uhkx2qqhmk" path="res://Assets/Art/UI/game_over.png" id="6_t757r"]
+[ext_resource type="AudioStream" uid="uid://c77rf5pfdumvm" path="res://Assets/Music/game_over_bgm.mp3" id="7_qf1nx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_t757r"]
 font = ExtResource("3_3p3j6")
@@ -79,3 +81,13 @@ bus = &"SFX"
 process_mode = 3
 stream = ExtResource("2_mjsgh")
 bus = &"SFX"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2121920232]
+position = Vector2(539.3701, 359.5)
+scale = Vector2(0.46192998, 0.400974)
+texture = ExtResource("6_t757r")
+
+[node name="game_over_bgm" type="AudioStreamPlayer" parent="." unique_id=1381643730]
+stream = ExtResource("7_qf1nx")
+autoplay = true
+bus = &"BGM"

@@ -3,9 +3,46 @@
 [ext_resource type="Script" uid="uid://x7maykly67t" path="res://Scripts/enemy2.gd" id="1_4w621"]
 [ext_resource type="Texture2D" uid="uid://dbak8x6unj128" path="res://Assets/Art/Enemies/Enemy_02.png" id="2_fkhb3"]
 [ext_resource type="AudioStream" uid="uid://dnbvcuhmd33ld" path="res://Assets/SoundFX/enemy_die.mp3" id="3_fkhb3"]
+[ext_resource type="Texture2D" uid="uid://cil58wvq4j2hb" path="res://Assets/Art/Enemies/enemy_02_die.png" id="4_x2mw6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jekx"]
-size = Vector2(22, 49)
+size = Vector2(101, 105)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v8gr7"]
+atlas = ExtResource("4_x2mw6")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5k5xd"]
+atlas = ExtResource("4_x2mw6")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfbiv"]
+atlas = ExtResource("4_x2mw6")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cw6oc"]
+atlas = ExtResource("4_x2mw6")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3mlo3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v8gr7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5k5xd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfbiv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cw6oc")
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
+}]
 
 [node name="enemy2" type="CharacterBody2D" unique_id=1766807267 groups=["Enemies"]]
 collision_layer = 2
@@ -16,10 +53,17 @@ script = ExtResource("1_4w621")
 texture = ExtResource("2_fkhb3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1096427982]
-position = Vector2(0, -2.5)
+position = Vector2(-3.5, -0.5)
 shape = SubResource("RectangleShape2D_4jekx")
 
 [node name="die_sound" type="AudioStreamPlayer" parent="." unique_id=1225331332]
 stream = ExtResource("3_fkhb3")
 pitch_scale = 0.6
 bus = &"SFX"
+
+[node name="death_anim" type="AnimatedSprite2D" parent="." unique_id=1427781519]
+visible = false
+sprite_frames = SubResource("SpriteFrames_3mlo3")
+animation = &"die"
+frame = 3
+frame_progress = 1.0

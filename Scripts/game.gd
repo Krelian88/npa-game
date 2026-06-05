@@ -17,8 +17,8 @@ extends Node2D
 # ONREADY VAR ENDS *********************************************
 
 # VARIABLES START HERE: *************************************************
-var coin = preload("res://Scene/coin.tscn")
-var target = preload("res://Scene/target.tscn")
+#var coin = preload("res://Scene/coin.tscn")
+#var target = preload("res://Scene/target.tscn")
 var pause_menu = preload("res://Scene/pause_menu.tscn")
 var _hp_tween : Tween
 var _displayed_score: float = 0.0
@@ -41,15 +41,15 @@ func _ready() -> void:
 	segment_manager.all_segments_cleared.connect(_on_game_won)
 	var vp_w := int(get_viewport_rect().size.x)
 	
-	var new_coin = coin.instantiate()
-	add_child(new_coin)
-	new_coin.global_position.x = randi_range(SPAWN_MARGIN, vp_w - SPAWN_MARGIN)
-	new_coin.global_position.y = randi_range(2400, 2800)
+	#var new_coin = coin.instantiate()
+	#add_child(new_coin)
+	#new_coin.global_position.x = randi_range(SPAWN_MARGIN, vp_w - SPAWN_MARGIN)
+	#new_coin.global_position.y = randi_range(2400, 2800)
 	
-	var new_target = target.instantiate()
-	add_child(new_target)
-	new_target.global_position.x = randi_range(SPAWN_MARGIN, vp_w - SPAWN_MARGIN)
-	new_target.global_position.y = randi_range(2400, 2800)
+	#var new_target = target.instantiate()
+	#add_child(new_target)
+	#new_target.global_position.x = randi_range(SPAWN_MARGIN, vp_w - SPAWN_MARGIN)
+	#new_target.global_position.y = randi_range(2400, 2800)
 	
 	bgm.play()
 	bgm.finished.connect(bgm.play)

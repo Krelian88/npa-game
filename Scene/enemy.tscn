@@ -3,9 +3,46 @@
 [ext_resource type="Script" uid="uid://bfg4tpivnkepq" path="res://Scripts/enemy.gd" id="1_4jekx"]
 [ext_resource type="Texture2D" uid="uid://c1b0cx45sqhxw" path="res://Assets/Art/Enemies/enemy_01.png" id="2_s685e"]
 [ext_resource type="AudioStream" uid="uid://dnbvcuhmd33ld" path="res://Assets/SoundFX/enemy_die.mp3" id="3_s685e"]
+[ext_resource type="Texture2D" uid="uid://ca10rn36fxttf" path="res://Assets/Art/Enemies/enemy_01_die.png" id="4_n6qjc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jekx"]
 size = Vector2(83, 99)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vmi60"]
+atlas = ExtResource("4_n6qjc")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hti8k"]
+atlas = ExtResource("4_n6qjc")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_44hyy"]
+atlas = ExtResource("4_n6qjc")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0qcj2"]
+atlas = ExtResource("4_n6qjc")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5op34"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vmi60")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hti8k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_44hyy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0qcj2")
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
+}]
 
 [node name="enemy" type="CharacterBody2D" unique_id=1766807267 groups=["Enemies"]]
 collision_layer = 2
@@ -22,3 +59,10 @@ shape = SubResource("RectangleShape2D_4jekx")
 [node name="die_sound" type="AudioStreamPlayer" parent="." unique_id=1403149638]
 stream = ExtResource("3_s685e")
 bus = &"SFX"
+
+[node name="death_anim" type="AnimatedSprite2D" parent="." unique_id=1637354214]
+visible = false
+sprite_frames = SubResource("SpriteFrames_5op34")
+animation = &"die"
+frame = 3
+frame_progress = 1.0

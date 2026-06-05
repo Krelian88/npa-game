@@ -1,13 +1,13 @@
 class_name Boss
 extends CharacterBody2D
-	
+
 # SIGNALS START HERE: **************************
 signal died
 # SIGNALS END HERE ********************************
-	
+
 # MOVEMENT STATE
 enum State { PATROL, CHARGE }
-	
+
 # CONSTANTS START HERE: **********************************
 # THIS IS FOR PATROL BOUNDARIES (segment 4: y=0 to y=750, boss starts in top half)
 const PATROL_BOUNDARY_LEFT := 100.0
@@ -15,7 +15,7 @@ const PATROL_BOUNDARY_RIGHT := 980.0
 const PATROL_BOUNDARY_TOP := 50.0
 const PATROL_BOUNDARY_BOTTOM := 350.0
 # CONSTANTS END *****************************************
-	
+
 # VARIABLES START HERE: ***************************************
 # STATS
 @export_group("Stats")
@@ -44,8 +44,12 @@ var charge_direction := Vector2.ZERO
 var minion_timer : Timer = null
 # ENTRANCE
 var is_entering := true  # Frozen until entrance animation completes
+# DEATH ANIMATION
+var _is_dead := false
+@onready var death_anim = $death_anim
+@onready var boss_die_sound = $boss_die_sound
 # VARIABLES END HERE ***************************************
-	
+
 # FUNCTIONS START HERE: ****************************************************
 func _ready() -> void:
 	add_to_group("Enemies")
@@ -55,21 +59,40 @@ func _ready() -> void:
 	_start_charge_timer()
 	
 func take_damage(amount: int = 1) -> void:
+	if _is_dead:
+		return
 	health -= amount
 	_flash_damage()
 	print("[Boss] Health: %d" % health)
 	if health <= MAX_HEALTH / 2.0 and phase == 1:
 		_enter_phase_2()
 	if health <= 0:
-		died.emit()
-		queue_free()
-	
+		_die()
+
+func _die() -> void:
+	_is_dead = true
+	velocity = Vector2.ZERO
+	is_entering = true
+	if shoot_timer:
+		shoot_timer.stop()
+	if charge_timer:
+		charge_timer.stop()
+	if minion_timer:
+		minion_timer.stop()
+	$Sprite2D.visible = false
+	death_anim.visible = true
+	death_anim.play("die")
+	boss_die_sound.play()
+	await death_anim.animation_finished
+	died.emit()
+	queue_free()
+
 func _flash_damage() -> void:
 	var tween := create_tween()
 	tween.set_loops(3)
 	tween.tween_property(self, "modulate", Color.RED, 0.05)
 	tween.tween_property(self, "modulate", Color.WHITE, 0.05)
-	
+
 func _enter_phase_2() -> void:
 	phase = 2
 	speed = SPEED_PHASE_2
@@ -78,7 +101,7 @@ func _enter_phase_2() -> void:
 	if charge_timer:
 		charge_timer.wait_time = randf_range(1.5, 2.5)
 	_start_minion_timer()
-	
+
 func _physics_process(_delta: float) -> void:
 	if is_entering:
 		return
@@ -88,7 +111,7 @@ func _physics_process(_delta: float) -> void:
 		State.CHARGE:
 			velocity = charge_direction * CHARGE_SPEED
 	move_and_slide()
-	
+
 func _patrol() -> void:
 	velocity.x = speed * direction
 	velocity.y = speed * direction_y
@@ -100,7 +123,7 @@ func _patrol() -> void:
 		direction_y = -1.0
 	elif position.y <= PATROL_BOUNDARY_TOP:
 		direction_y = 1.0
-	
+
 func _start_charge() -> void:
 	if is_entering or not player:
 		return
@@ -119,11 +142,11 @@ func _start_charge() -> void:
 	dur_timer.timeout.connect(dur_timer.queue_free)
 	add_child(dur_timer)
 	dur_timer.start()
-	
+
 func _end_charge() -> void:
 	state = State.PATROL
 	velocity = Vector2.ZERO
-	
+
 func _start_charge_timer() -> void:
 	charge_timer = Timer.new()
 	charge_timer.wait_time = randf_range(2.0, 4.0)
@@ -131,7 +154,7 @@ func _start_charge_timer() -> void:
 	charge_timer.timeout.connect(_start_charge)
 	add_child(charge_timer)
 	charge_timer.start()
-	
+
 func _start_shoot_timer() -> void:
 	shoot_timer = Timer.new()
 	shoot_timer.wait_time = 2.0
@@ -139,7 +162,7 @@ func _start_shoot_timer() -> void:
 	shoot_timer.timeout.connect(_shoot)
 	add_child(shoot_timer)
 	shoot_timer.start()
-	
+
 func _shoot() -> void:
 	if is_entering or not player:
 		return
@@ -147,7 +170,7 @@ func _shoot() -> void:
 	new_bullet.direction = global_position.direction_to(player.global_position)
 	new_bullet.position = global_position
 	get_parent().add_child(new_bullet)
-	
+
 func _start_minion_timer() -> void:
 	minion_timer = Timer.new()
 	minion_timer.wait_time = randf_range(4.0, 8.0)
@@ -155,7 +178,7 @@ func _start_minion_timer() -> void:
 	minion_timer.timeout.connect(_spawn_minion)
 	add_child(minion_timer)
 	minion_timer.start()
-	
+
 func _spawn_minion() -> void:
 	var enemy_scenes := [
 		preload("res://Scene/enemy.tscn"),

@@ -229,6 +229,7 @@ func _on_segment_complete() -> void:
 		_show_indicator()
 		waiting_for_player = true
 	else:
+		await get_tree().create_timer(3.0).timeout
 		advance_to_next_segment()
 
 func _process(_delta: float) -> void:

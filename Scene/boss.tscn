@@ -2,9 +2,47 @@
 
 [ext_resource type="Script" uid="uid://bho7jjp0ctdc7" path="res://Scripts/boss.gd" id="1_bv8a7"]
 [ext_resource type="Texture2D" uid="uid://byb7a6mg30r3w" path="res://Assets/Art/Boss/boss_01.png" id="2_bv8a7"]
+[ext_resource type="Texture2D" uid="uid://c7ftpnqk53mun" path="res://Assets/Art/Boss/boss_die.png" id="3_46auw"]
+[ext_resource type="AudioStream" uid="uid://hdf4tti7xa64" path="res://Assets/SoundFX/boss_die_sound.mp3" id="4_lcnog"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bv8a7"]
-size = Vector2(224, 217)
+size = Vector2(268, 265)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcnog"]
+atlas = ExtResource("3_46auw")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xiart"]
+atlas = ExtResource("3_46auw")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5pds"]
+atlas = ExtResource("3_46auw")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kn3ce"]
+atlas = ExtResource("3_46auw")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hrqh5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcnog")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xiart")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y5pds")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kn3ce")
+}],
+"loop": false,
+"name": &"die",
+"speed": 5.0
+}]
 
 [node name="boss" type="CharacterBody2D" unique_id=1314417932]
 collision_layer = 2
@@ -12,9 +50,21 @@ collision_mask = 2
 script = ExtResource("1_bv8a7")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1821781409]
-scale = Vector2(1.046875, 1.046875)
+scale = Vector2(1.2812499, 1.2812499)
 texture = ExtResource("2_bv8a7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2123075259]
 position = Vector2(2, 5.5)
 shape = SubResource("RectangleShape2D_bv8a7")
+
+[node name="death_anim" type="AnimatedSprite2D" parent="." unique_id=850288187]
+visible = false
+scale = Vector2(1.2421876, 1.2421873)
+sprite_frames = SubResource("SpriteFrames_hrqh5")
+animation = &"die"
+frame = 3
+frame_progress = 1.0
+
+[node name="boss_die_sound" type="AudioStreamPlayer" parent="." unique_id=1640727967]
+stream = ExtResource("4_lcnog")
+bus = &"SFX"

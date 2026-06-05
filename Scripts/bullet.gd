@@ -3,12 +3,18 @@ extends Area2D
 # VARIABLES START HERE: **************************
 @export var speed = 2000
 @export var damage := 1
+@export var bullet_type: String = ""
 var hit := false
+@onready var anim = $anim
 # VARIABLES END ***********************************
 
 # FUNCTIONS START HERE: *******************************
 func _ready() -> void:
-	pass
+	anim.visible = false
+	if bullet_type != "":
+		$AnimatedSprite2D.visible = false
+		anim.visible = true
+		anim.play(bullet_type)
 
 func _process(_delta: float) -> void:
 	pass

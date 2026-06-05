@@ -98,6 +98,11 @@ func _on_ammo_changed(current: int, max_val: int) -> void:
 
 func _on_weapon_mode_changed(mode: int) -> void:
 	ammo_bar.visible = mode != 0
+	match mode:
+		1:  # TRIPLE
+			ammo_bar.texture_progress = load("res://Assets/Art/UI/ammo_bar.png")
+		2:  # RAPID
+			ammo_bar.texture_progress = load("res://Assets/Art/UI/ammo_bar_rapid.png")
 
 func _on_grenade_count_changed(count: int) -> void:
 	grenade_icon.visible = count > 0

@@ -17,14 +17,16 @@ var bullet = preload("res://Scene/bullet.tscn")
 var is_invincible = false
 var attract_mode := false
 var weapon_mode := WeaponMode.NORMAL
-var special_ammo := 0
+var triple_ammo := 0
+var rapid_ammo := 0
 var grenade_count := 0
 var fire_timer := 0.0
 const RAPID_FIRE_RATE := 0.12
 var grenade_scene = preload("res://Scene/grenade_projectile.tscn")
 @export var speed = 250
 @export var player_health : int = 100
-@export var max_special_ammo := 10
+@export var max_triple_ammo := 10
+@export var max_rapid_ammo := 30
 @export var hp_restore_percent := 15
 @export var grenades_per_pickup := 1
 var lives := 3
@@ -140,43 +142,52 @@ func shoot() -> void:
 			shoot_sound.pitch_scale = randi_range(1, 2)
 			shoot_sound.play()
 		WeaponMode.TRIPLE:
-			_fire_bullet(-15.0, 2)	# ← change 2 to whatever
-			_fire_bullet(0.0, 2)
-			_fire_bullet(15.0, 2)
+			_fire_bullet(-15.0, 2, "triple")	# ← change 2 to whatever
+			_fire_bullet(0.0, 2, "triple")
+			_fire_bullet(15.0, 2, "triple")
 			_use_special_ammo()
 			triple_shot_sound.play()
 		WeaponMode.RAPID:
-			_fire_bullet(0.0, 3)	# ← change 1 to whatever
+			_fire_bullet(0.0, 3, "rapid")	# ← change 1 to whatever
 			_use_special_ammo()
 			if not rapid_shot_sound.playing:
 				rapid_shot_sound.play()
 
-func _fire_bullet(angle_offset_deg: float, damage: int = 1) -> void:
+func _fire_bullet(angle_offset_deg: float, damage: int = 1, bullet_type: String = "") -> void:
 	var new_bullet = bullet.instantiate()
 	new_bullet.damage = damage
+	new_bullet.bullet_type = bullet_type
 	get_parent().add_child(new_bullet)
 	new_bullet.global_position = $Gun/Muzzle.global_position
 	new_bullet.global_rotation = $Gun.global_rotation + deg_to_rad(angle_offset_deg)
 
-func _use_special_ammo() -> void:
-	special_ammo -= 1
-	ammo_changed.emit(special_ammo, max_special_ammo)
-	if special_ammo <= 0:
-		weapon_mode = WeaponMode.NORMAL
-		weapon_mode_changed.emit(WeaponMode.NORMAL)
+func _use_special_ammo() -> void:	
+	match weapon_mode:
+		WeaponMode.TRIPLE:
+			triple_ammo -= 1
+			ammo_changed.emit(triple_ammo, max_triple_ammo)
+			if triple_ammo <= 0:
+				weapon_mode = WeaponMode.NORMAL
+				weapon_mode_changed.emit(WeaponMode.NORMAL)
+		WeaponMode.RAPID:
+			rapid_ammo -= 1
+			ammo_changed.emit(rapid_ammo, max_rapid_ammo)
+			if rapid_ammo <= 0:
+				weapon_mode = WeaponMode.NORMAL
+				weapon_mode_changed.emit(WeaponMode.NORMAL)
 
 func take_powerup(type: Powerup.Type) -> void:
 	match type:
 		Powerup.Type.TRIPLE_SHOT:
 			weapon_mode = WeaponMode.TRIPLE
-			special_ammo = max_special_ammo
-			ammo_changed.emit(special_ammo, max_special_ammo)
+			triple_ammo = max_triple_ammo
+			ammo_changed.emit(triple_ammo, max_triple_ammo)
 			weapon_mode_changed.emit(WeaponMode.TRIPLE)
 			special_ammo_sound.play()
 		Powerup.Type.RAPID_SHOT:
 			weapon_mode = WeaponMode.RAPID
-			special_ammo = max_special_ammo
-			ammo_changed.emit(special_ammo, max_special_ammo)
+			rapid_ammo = max_rapid_ammo
+			ammo_changed.emit(rapid_ammo, max_rapid_ammo)
 			weapon_mode_changed.emit(WeaponMode.RAPID)
 			special_ammo_sound.play()
 		Powerup.Type.HP_FILL:

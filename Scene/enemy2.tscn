@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://ocrkjlgey0i7"]
 
 [ext_resource type="Script" uid="uid://x7maykly67t" path="res://Scripts/enemy2.gd" id="1_4w621"]
-[ext_resource type="Texture2D" uid="uid://dafjtmem3htxn" path="res://Assets/Art/Enemies/Purple can.png" id="2_4w621"]
+[ext_resource type="Texture2D" uid="uid://dbak8x6unj128" path="res://Assets/Art/Enemies/Enemy_02.png" id="2_fkhb3"]
+[ext_resource type="AudioStream" uid="uid://dnbvcuhmd33ld" path="res://Assets/SoundFX/enemy_die.mp3" id="3_fkhb3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jekx"]
 size = Vector2(22, 49)
@@ -12,8 +13,13 @@ collision_mask = 2
 script = ExtResource("1_4w621")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2095031804]
-texture = ExtResource("2_4w621")
+texture = ExtResource("2_fkhb3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1096427982]
 position = Vector2(0, -2.5)
 shape = SubResource("RectangleShape2D_4jekx")
+
+[node name="die_sound" type="AudioStreamPlayer" parent="." unique_id=1225331332]
+stream = ExtResource("3_fkhb3")
+pitch_scale = 0.6
+bus = &"SFX"

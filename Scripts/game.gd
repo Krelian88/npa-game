@@ -56,11 +56,15 @@ func _ready() -> void:
 		
 	player.input_enabled = false
 	player.global_position = Vector2(540, 3200)
+	player.force_run = true
 	var entrance := create_tween()
 	entrance.set_ease(Tween.EASE_OUT)
 	entrance.set_trans(Tween.TRANS_QUAD)
 	entrance.tween_property(player, "global_position", Vector2(540, 2850), 3.0)
-	entrance.tween_callback(func(): player.input_enabled = true)
+	entrance.tween_callback(func():
+		player.input_enabled = true
+		player.force_run = false
+	)
 	entrance.tween_interval(0.5)
 	entrance.tween_callback(func(): segment_manager.start_segment())
 	player.ammo_changed.connect(_on_ammo_changed)
@@ -127,12 +131,14 @@ func _on_player_respawn_needed() -> void:
 	var seg = SegmentManager.SEGMENTS[segment_manager.current_segment]
 	player.global_position = Vector2(seg["start_x"], seg["y_max"] + 100)
 	player.respawn()
+	player.force_run = true
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(player, "global_position", Vector2(seg["start_x"], seg["y_max"] - 150), 2.0)
 	await tween.finished
 	player.input_enabled = true
+	player.force_run = false
 	await get_tree().create_timer(1.0).timeout
 	player.end_invincibility()
 

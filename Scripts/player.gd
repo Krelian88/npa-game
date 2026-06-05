@@ -23,7 +23,7 @@ var grenade_count := 0
 var fire_timer := 0.0
 const RAPID_FIRE_RATE := 0.12
 var grenade_scene = preload("res://Scene/grenade_projectile.tscn")
-@export var speed = 250
+@export var speed: float = 250.0
 @export var player_health : int = 100
 @export var max_triple_ammo := 10
 @export var max_rapid_ammo := 30
@@ -32,6 +32,9 @@ var grenade_scene = preload("res://Scene/grenade_projectile.tscn")
 var lives := 3
 var _is_dead := false
 var _blink_tween : Tween
+@onready var run_anim = $run_anim
+var force_run := false
+@onready var death_anim = $death_anim
 #VARIABLES END *******************************************************
 
 # SIGNALS START HERE: ***********************************************
@@ -64,14 +67,28 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if player_health <= 0 and not _is_dead:
 		_is_dead = true
-		if attract_mode:
-			attract_game_over.emit()
-		elif lives > 1:
-			lives -= 1
-			lives_changed.emit(lives)
-			player_respawn_needed.emit()
-		else:
-			get_tree().change_scene_to_file("res://Scene/game_over.tscn")
+		_handle_death()
+
+func _handle_death() -> void:
+	print("[Player] _handle_death triggered, health: ", player_health)
+	input_enabled = false
+	force_run = false
+	if _blink_tween:
+		_blink_tween.kill()
+		_blink_tween = null
+	$Sprite2D.visible = false
+	run_anim.visible = false
+	death_anim.visible = true
+	death_anim.play("die")
+	await death_anim.animation_finished
+	if attract_mode:
+		attract_game_over.emit()
+	elif lives > 1:
+		lives -= 1
+		lives_changed.emit(lives)
+		player_respawn_needed.emit()
+	else:
+		get_tree().change_scene_to_file("res://Scene/game_over.tscn")
 
 func _physics_process(delta: float) -> void:
 	if input_enabled:
@@ -98,6 +115,19 @@ func _physics_process(delta: float) -> void:
 			velocity = Vector2.ZERO
 	
 	move_and_slide()
+	
+	# Run animation toggle - only when not dead
+	if not _is_dead:
+		if velocity != Vector2.ZERO or force_run:
+			if not run_anim.visible:
+				$Sprite2D.visible = false
+				run_anim.visible = true
+				run_anim.play("run_up")
+		else:
+			if run_anim.visible:
+				run_anim.visible = false
+				run_anim.stop()
+				$Sprite2D.visible = true
 	
 	if is_jumping == false:
 		$JumpTimer.start()
@@ -223,6 +253,9 @@ func respawn() -> void:
 	_is_dead = false
 	modulate = Color.WHITE
 	visible = true
+	death_anim.visible = false
+	$Sprite2D.visible = true
+	run_anim.visible = false
 	is_invincible = true
 	_blink_tween = create_tween()
 	_blink_tween.set_loops()
